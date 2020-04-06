@@ -1,0 +1,101 @@
+#login-logo,
+#login-logo-big,
+#login-logo:hover {
+    width:  40px;
+    height: 40px;
+    background-image: url('/img/login.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity:0.8;
+}
+
+#login-logo-big {
+    width:  80px;
+    height: 80px;
+    margin: auto;
+}
+
+#login-logo:hover {
+    opacity:1;
+}
+
+.setup-popup {
+    position:absolute;
+    background-color:#e0ecff;
+    color:black;
+    visibility:hidden;
+    width:250px;
+    height:340px;
+    font-size: 80%;
+    border:solid red 1px;
+    -moz-outline:0;
+    outline:0;
+    visibility:hidden;
+    padding:5px;
+    z-index:1;
+}
+
+.setup-popup #popup-name {
+    font-weight: bold;
+}
+
+.popup-info-fields {
+    text-align: center;
+    line-height: 24px;
+}
+
+.setup-popup #popup-role {
+    margin-bottom: 10px;
+}
+
+.setup-popup .loginbuttons {
+    margin:auto;
+    margin-top:15px;
+    margin-bottom:15px;
+}
+
+.setup-popup .loginbuttons,
+.popup-buttons {
+    width:150px;
+}
+
+.login-field {
+    width: 200px;
+}
+
+
+#enter-user-passwd-dialog {
+    width:400px;
+    height:150px;
+}
+
+#enter-user-passwd-dialog table {
+    border-collapse:separate;
+    border-spacing:10px 10px;
+    margin:0.3em;
+}
+
+
+#reset-passwd-dialog {
+    width:400px;
+    height:150px;
+}
+
+#reset-passwd-dialog table {
+    border-collapse:separate;
+    border-spacing:10px 10px;
+    margin:0.3em;
+}
+
+
+#forgot-passwd-dialog {
+    width:400px;
+    height:140px;
+}
+
+#forgot-passwd-dialog {
+    border-collapse:separate;
+    border-spacing:10px 10px;
+    margin:0.3em;
+}

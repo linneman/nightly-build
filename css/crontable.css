@@ -1,0 +1,32 @@
+#tab-cron .cron-table {
+    width:100%;
+    border: 1px solid black;
+    empty-cells:show;
+    margin-bottom: 20px;
+    /* border-collapse:collapse; */
+}
+
+#tab-cron .cron-table th,
+#tab-cron .cron-table td {
+    height:39px;
+    text-align: center;
+
+}
+
+#tab-cron .cron-table th {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#tab-cron .cron-table #prototype-row {
+    display:none;
+}
+
+#tab-cron .cron-table .enabled { width:5%; }
+#tab-cron .cron-table .m { width:10%; }
+#tab-cron .cron-table .h { width:10%; }
+#tab-cron .cron-table .dom { width:10%; }
+#tab-cron .cron-table .mon { width:10%; }
+#tab-cron .cron-table .dow { width:10%; }
+#tab-cron .cron-table .desc { width:35%; }
+#tab-cron .cron-table .action { width:10%; }

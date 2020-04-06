@@ -1,0 +1,12 @@
+.linenums li {
+    list-style-type: decimal;
+}
+
+.doc-image {
+    width:100%;
+}
+
+.doc-image img {
+    max-width:100%;
+    height:auto;
+}

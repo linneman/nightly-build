@@ -1,0 +1,28 @@
+#tab-administration .user-table {
+    width:100%;
+    border: 1px solid black;
+    empty-cells:show;
+    margin-bottom: 20px;
+    /* border-collapse:collapse; */
+}
+
+#tab-administration .user-table th,
+#tab-administration .user-table td {
+    height:39px;
+    text-align: center;
+
+}
+
+#tab-administration .user-table th {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+}
+
+#tab-administration .user-table #prototype-row {
+    display:none;
+}
+
+#tab-administration .user-table .select { width:10%; }
+#tab-administration .user-table .name { width:35%; }
+#tab-administration .user-table .email { width:35%; }
+#tab-administration .user-table .role { width:20%; }

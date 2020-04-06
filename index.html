@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="stylesheet" type="text/css" href="css/prettify.css">
+  </head>
+
+  <body>
+    <a id="about" class="anchor"></a>
+    <div class="fixed-bg-img">
+      <div class="fixed-bg">
+        <div class="centered">
+          <h1>The Bond Nightly Release System</h1>
+          <h3>Are you still generating your release candidates manually?</h3>
+          <h3>Why not automate it?</h3>
+          <p style="margin-bottom:50px;">&nbsp</p>
+          <p><a id="findoutmore" href="#features" class="button">FIND OUT MORE</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div id="header-container" class="sticky">
+      <div id="header" class="sticky">
+        <div id="menu" class="topnav">
+          <a id="ref-about" href="#about">About</a>
+          <a id="ref-features" href="#features">Features</a>
+          <a id="ref-example" href="#example">Example</a>
+          <a id="ref-getting-started" href="#getting-started">Getting Started</a>
+          <a id="ref-doc" href="clojure-intro.html">Documentation</a>
+          <a id="ref-api-docs" href="doc/api/index.html">API</a>
+          <a id="ref-sources" href="http://github.com/linneman/nightly-build">Source Code</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+      var clear_menu_seleciton = function() {
+          var menus = document.getElementById("menu").children;
+          for( i=0; i < menus.length; ++i ) {
+              menus.item(i).classList.remove("active");
+          }
+      }
+
+      var menuhandler = function(event) {
+
+          clear_menu_seleciton();
+
+          if( event.target.id == "findoutmore" )
+              document.getElementById("ref-features").classList.add("active");
+          else
+              event.target.classList.add("active");
+
+          setTimeout( clear_menu_seleciton, 1000 );
+      }
+
+      document.getElementById("menu").addEventListener("click", menuhandler );
+      document.getElementById("findoutmore").addEventListener("click", menuhandler );
+    </script>
+
+    <div id="features" class="anchor"></div>
+    <h2 class="section">Features</h2>
+    <div class="section-separator"></div>
+
+    <div class="content-container">
+      <div id="left" class="key-points">
+        <h3>Full Release Automation</h3>
+        <img src="img/automation-logo.png" alt="logo sw integration">
+        <p>Automation  of the  complete release  process of  checkout of  source
+        code, build, versioning, integration and  sending of status reports with
+        the declared goal of achieving a  high degree of automation of the tasks
+        typically performed manually by software integrators in complex software
+        projects.</p>
+      </div>
+
+      <div id="middle-left" class="key-points">
+        <h3>Transparency</h3>
+        <img src="img/ssh-logo.png" alt="logo ssh">
+        <p>Transparent   implementation  of   build  descriptions   through  the
+        exclusive use of remote shell  commands via ssh. Within complex software
+        projects, software integration  solutions in many cases  take over tasks
+        that are traditionally performed by build  tool such as make. This bears
+        the  danger that  build processes  can no  longer be  reproduced by  all
+        project participants. An  architecture in which all  steps necessary for
+        the  build must  be executed  via  a remote  shell effectively  prevents
+        this.</p>
+      </div>
+
+      <div id="middle-right" class="key-points">
+        <h3>Results Oriented GUI</h3>
+        <img src="img/webgui-logo.png" alt="logo web gui">
+        <p>Web-based  user  interface  for  a clear  presentation  of  completed
+        and  currently executed  build  processes, full  text  editor for  build
+        descriptions, additional  support functions for editing  tables for cron
+        jobs, user access data and privileges, and documentation.</p>
+      </div>
+
+      <div id="right" class="key-points" >
+        <h3>High Level Parameterization</h3>
+        <img src="img/clojure-logo.png" alt="logo Clojure">
+        <p>Extensive possibilities  of parameterization and  templating. Control
+        of build processes via cron table, web interface or REST API. End-to-end
+        use  of the  functional programming  languages Clojure  and Clojurscript
+        for  server  and  client  (browser) implementations.  Delivery  as  Java
+        ARchive (JAR),  which contains  all components  and requires  no further
+        dependencies except the JVM and a Unixoid operating system.</p>
+      </div>
+    </div>
+
+    <div class="float-divider"></div>
+
+
+    <div id="example" class="anchor"></div>
+    <h2 class="section">Example</h2>
+    <div class="section-separator"></div>
+
+    <div class="content-container">
+      <div class="one-column">
+        <p>The following figure shows a screenshot  of the Bond web interface in
+        practice. The  status display  only contains  entries about  those build
+        processes where  changes in  the source code  have been  identified. The
+        color green indicates  that a build process  was successfully completed,
+        while red symbolizes an early termination. Yellow indicates that a build
+        process is  currently being processed.  The button  on the right  can be
+        used to  stop and restart  builds. In  addition, the console  output for
+        each operation  can be tracked  in real-time and the  changes identified
+        for  each operation  can be  displayed.  Each build  process receives  a
+        unique identification. All build results  are stored in a directory with
+        the same  name on the build  machine. A software version  number is also
+        generated to automatically create release candidates, which is displayed
+        in the middle column.</p>
+
+        <img src="img/screenshot_status_page.png" alt="screenshot status page"
+             class="centered-image">
+        <id class="centered">
+          <p><b>Build Status Page of Web GUI</b></p>
+        </id>
+        <br>
+      </div>
+    </div>
+
+    <div class="float-divider"></div>
+
+
+    <div id="getting-started" class="anchor"></div>
+    <h2 class="section">Getting Started</h2>
+    <div class="section-separator"></div>
+
+    <div class="content-container">
+      <div class="one-column">
+        <h3>Requirements</h3>
+        <p>You need the following tools to be installed to run bond:</p>
+        <ul>
+          <li>Unix-type operating system e.g. <a href="https://debian.org">GNU/Linux</a>, <a href="https://www.bsd.org">BSD</a>, <a href="https://www.apple.com/macos">Mac OS X</a></li>
+          <li>SSH Client and Server, typically preinstalled on most Unix systems</li>
+          <li>a recent <a href="https://openjdk.java.net/">JDK</a></li>
+        </ul>
+        <h3>Download and Run the Server</h3>
+        <p>A precompiled  release for bond  can be retrieved from  the following
+        <a href="https://github.com/linneman/nightly-build/releases/download">URL</a>. Or
+        just copy and paste the following command into a shell:</p>
+        <pre class="prettyprint lang-sh">wget https://github.com/linneman/nightly-build/releases/download/v1.0.0/bond-1.0.0-standalone.jar</pre>
+
+        <p>Use the following command to start the bond server:</p>
+        <pre class="prettyprint lang-sh">java -jar bond-1.0.0-standalone.jar</pre>
+
+        <p>Immediately  after  starting the  server,  an  administration URL  is
+        displayed on the local console:</p>
+
+<pre class="prettyprint lang-none">
+______________ Administration Account ______________
+Copy and paste the following URL into your brower to
+active the administration account:
+
+http://localhost:3000/confirm?name=admin&key=iUMXdnWbPzwExRz%2BclC8xA%3D%3D
+</pre>
+        <p>This URL is used to unlock the administrator account and must be used
+        immediately after starting the server. Via the login button in the upper
+        right corner of  the web interface a new password  should be assigned to
+        the user 'admin'.</p>
+
+        <h3>Starting the First Test Build</h3>
+
+        <p>In    directory    build-descriptions   the    build    configuration
+        'sample_config.clj'  was added  which can  be executed  immediately. The
+        only requirement is  a key based ssh authentication to  the local or any
+        remote build machine. Refer to
+        <a href="https://www.digitalocean.com/community/tutorials/how-to-configure-ssh-key-based-authentication-on-a-linux-server"
+        target="_blank">this tutorial</a>
+        for more detail information how to set this up.</p>
+
+        <p>The easiest  way is  to use  the local  host as  a build  machine. If
+        ssh-key  authentication is  installed correctly,  the following  command
+        should  print the  contents of  the  root directory  without a  password
+        prompt.</p>
+
+        <pre class="prettyprint lang-sh">ssh localhost "ls /"</pre>
+
+        <p>If this is the case, first activate  the cron table via the menu item
+        'Cron'. In the table  row 'create-build-description-sample-1' select the
+        entry 'Start' via the button  'Action'. The build is started immediately
+        and displayed  in the table  'Build Status'.  There you can  get further
+        information like  the console output of  the build process and  stop and
+        restart the build process.</p>
+
+        <p>Refer to the section <a href="clojure-intro.html" target="_blank">documentation</a>
+        and to the projects
+        <a href="http://github.com/linneman/nightly-build" target="_blank">readme file on Github</a>
+        for further information.</p>
+
+      </div>
+    </div>
+
+    <script src="prettify.js"></script>
+    <script>
+      window.onload = (function(){ prettyPrint(); });
+    </script>
+
+  </body>
+
+</html>
