@@ -22,7 +22,7 @@
     <div id="header-container" class="sticky">
       <div id="header" class="sticky">
         <div id="menu" class="topnav">
-          <a id="ref-about" href="#about">About</a>
+          <a id="ref-about" class="active" href="#about">About</a>
           <a id="ref-features" href="#features">Features</a>
           <a id="ref-example" href="#example">Example</a>
           <a id="ref-getting-started" href="#getting-started">Getting Started</a>
@@ -35,7 +35,7 @@
 
     <script>
 
-      var clear_menu_seleciton = function() {
+      var clear_menu_selection = function() {
           var menus = document.getElementById("menu").children;
           for( i=0; i < menus.length; ++i ) {
               menus.item(i).classList.remove("active");
@@ -43,19 +43,39 @@
       }
 
       var menuhandler = function(event) {
-
-          clear_menu_seleciton();
+          clear_menu_selection();
 
           if( event.target.id == "findoutmore" )
               document.getElementById("ref-features").classList.add("active");
           else
               event.target.classList.add("active");
-
-          setTimeout( clear_menu_seleciton, 1000 );
       }
 
       document.getElementById("menu").addEventListener("click", menuhandler );
       document.getElementById("findoutmore").addEventListener("click", menuhandler );
+
+      window.addEventListener("scroll", function(event) {
+          var sections = ["about","features","example","getting-started"];
+          var menu = "ref-about", menu_pos = 0;
+          var top = this.scrollY;
+
+          clear_menu_selection();
+
+          sections.forEach(
+              function ( section ) {
+                  var section_obj = document.getElementById( section );
+                  var section_pos_y =  section_obj.getBoundingClientRect().top + window.pageYOffset;
+                  if( top - section_pos_y > - 1 ) {
+                      menu = "ref-"+section;
+                      menu_pos = section_pos_y;
+                  }
+              } );
+
+          if( menu != null ) {
+              document.getElementById( menu ).classList.add("active");
+          }
+      }, false );
+
     </script>
 
     <div id="features" class="anchor"></div>
