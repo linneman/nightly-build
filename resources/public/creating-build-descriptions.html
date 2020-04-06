@@ -1,0 +1,554 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Nightly Build Server</title>
+    <meta name="author" content="Otto Linnemann">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+
+    <link rel="stylesheet" type="text/css" href="css/project.css" />
+    <link rel="stylesheet" type="text/css" href="css/auth.css" />
+    <link rel="stylesheet" type="text/css" href="css/repl.css" />
+    <link rel="stylesheet" type="text/css" href="css/button.css">
+    <link rel="stylesheet" type="text/css" href="css/flatbutton.css">
+    <link rel="stylesheet" type="text/css" href="css/css3button.css">
+    <link rel="stylesheet" type="text/css" href="css/gh-fork-ribbon.css" />
+    <link rel="stylesheet" type="text/css" href="css/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="css/tab.css" />
+    <link rel="stylesheet" type="text/css" href="css/tabbar.css" />
+    <link rel="stylesheet" type="text/css" href="css/buildtable.css" />
+    <link rel="stylesheet" type="text/css" href="css/build-configurations.css" />
+    <link rel="stylesheet" type="text/css" href="css/crontable.css" />
+    <link rel="stylesheet" type="text/css" href="css/usertable.css" />
+    <link rel="stylesheet" type="text/css" href="css/custombutton.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css">
+    <link rel="stylesheet" type="text/css" href="css/menuitem.css">
+    <link rel="stylesheet" type="text/css" href="css/menuseparator.css">
+    <link rel="stylesheet" type="text/css" href="css/menubutton.css">
+    <link rel="stylesheet" type="text/css" href="css/menubar.css">
+    <link rel="stylesheet" type="text/css" href="css/prettify.css">
+    <link rel="stylesheet" type="text/css" href="css/clojurecode.css">
+    <!--[if IE]>
+        <link rel="stylesheet" type="text/css" href="mainpanel.css" media="all">
+        <![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+  </head>
+
+  <body>
+
+    <div id="header-container" class="sticky">
+      <div id="header">
+        <div id="header-left">Nightly Build Server</div>
+      </div>
+      <div id="header-separation"></div>
+
+      <div id="nightly-build-tab-menu" class="goog-tab-bar goog-tab-bar-start">
+        <div id="logo"><img src="img/logo.png" width="120" style="margin-top:-15px"></div>
+        <h3>Help Contents</h3>
+        <table>
+          <tr><td><a href="clojure-intro.html">Introduction</a></td></tr>
+          <tr><td><a href="online-repl.html">The Online REPL</a></td></tr>
+          <tr><td><a href="creating-build-descriptions.html">Build Descriptions</a></td></tr>
+          <tr><td><a href="connecting-an-external-repl.html">External REPL</a></td></tr>
+          <tr><td><a href="doc/api/index.html">API Docs</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="nightly-tabpane doc">
+        <h2>Creating Build Descriptions</h2>
+        <p>In  essence, a  build description  consists of  two parts.  First the
+        individual build steps  are processed sequentially on  the build machine
+        which is  usually but not  necessarily remotely controlled via  a secure
+        shell (ssh) connection. Secondly, after successful processing or in case
+        of an error,  a termination handler always executes one  command line on
+        the  local shell  and an  additional support  function which  takes over
+        logging, sending status e-mails, etc.</p>
+
+        <h3>The Build Step</h3>
+        <p>One build step is described  by the following three parameters which
+        are stored within a Clojure vector as indicated in the following:</p>
+
+        <font size="5"><pre class="prettyprint lang-clj">[:identifier-key "remote shell command string" timeout]</pre></font>
+
+        <p>The  <i>identifier</i> is  used to  associated a  label to  the given
+        build  step. This  is displayed  on  the status  page. In  case a  build
+        step  failed it  allows  to immedially  track in  which  step the  error
+        occured.</p>
+
+        <p>The  <i>shell command string</i>  is executed  on the  build
+        machine. It  uses the syntax of  the system shell on  this machine. Most
+        GNU/Linux systems either use
+        <a href="https://www.gnu.org/software/bash">bash</a> or a variant of
+        <a href="https://www.in-ulm.de/~mascheck/various/ash">Almquist Shell</a>.
+        Both are and widely compatible to each other.</p>
+
+        <p>The last parameter  <i>timeout</i> specifies when a  shell command is
+        expected to  be completed. When this  value is exceeded, the  command is
+        interrupted and an error is assumed.</p>
+
+        <h3>The Task List</h3>
+        <p>The builds  steps are declared within  Clojure's <i>List Sequence</i>
+        as indicated in the following example:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(list
+ [:cleanup
+  (format
+   "rm -rf %s"
+  dev-build-root) 120]
+ [:init
+  (format
+   "mkdir -p %s"
+   dev-build-root) 10]
+ [:fetch
+  (format
+   (lstr
+    "cd %s &&"
+    "repo init -u %s -b %s -m %s &&"
+    "repo sync -q -j 4 2>&1")
+   dev-build-root
+   manifest-url manifest-repo-branch dev-manifest) 7200]
+
+ ;; further steps ...
+
+ [:anything-changed?
+   (format
+    (lstr
+     "cd %s && if [ -f no_changes ]; then"
+     "  echo 'no new changes' > nightly.log;"
+     "  exit 1;"
+     "fi")
+    dev-build-root) 10]
+
+ ;; further steps ...
+
+ )</pre></font>
+
+        <p>Let's  have closer  look what  these  do in  the aboves  hypothetical
+        example.</p>
+
+        <p>At first within the build step <i>cleanup</i> the directory where the
+        build takes place is completely removed. We use the Linux
+        <a href="https://en.wikipedia.org/wiki/Rm_(Unix)">rm</a>
+        command for this.  The parameters 'rf' specify that  the directory shall
+        be removed recursively with all of its  contents in a forced way that is
+        without asking for confirmation prompts.</p>
+
+        <p>The directory name which is going to be removed is declared via a
+        <a href="https://en.wikipedia.org/wiki/Printf_format_string">format string</a>.
+        This concept is mostly known from  the C programming language but widely
+        used in other programming languages as well. Clojure offers the
+        <a href="https://clojuredocs.org/clojure.core/format">format</a> function
+        which does the  same. Its first argument is the  so called format string
+        where template arguments  such as '%s' are replaced  by their associated
+        parameters. Here the template character 's' indicates that the parameter
+        is  of  the type  string.  The  used paramter  <i>dev-build-root</i>  is
+        declared outsite of the definition of the <i>task list</i> and discussed
+        later.</p>
+
+        <p>The  remove  operation  can  consume a  significant  amount  of  time
+        depending on the  amount of data to be removed.  We declare a relatively
+        long timeout value of two minutes for this reason.</p>
+
+        <p>The second build step <i>init</i> just  creates a new and empty build
+        directory in the same manner.</p>
+
+        <p>The third build step <i>fetch</i> is  used to clone all of the source
+        code from the source code management system. Here the
+        <a href="https://source.android.com/setup/develop/repo">repo</a> command
+        is used to  clone from numerous git repositories. Since  the commands to
+        be  used are  highly project  dependend, the  syntax of  the <i>repo</i>
+        command is  not discussed in  detail here.  This example is  intended to
+        illustrate something else instead:  Actually the build step <i>fetch</i>
+        invokes three shell commands which  are separated by the '&&' operators.
+        Since the <i>repo</i> command needs  to be executed within the directory
+        <i>dev-build-root</i> we  have to set  the current working  directory to
+        this location by invoking the shell command <i>cd</i> with the directory
+        name  as parameter  first. Afterwords  <i>repo</i> is  called twice  and
+        creates  its  output  content  inside  the  specified  build  directory.
+        The  example illustrates  how  several shell  commands  can be  executed
+        sequentially in one shell instance.  Such sequences can be consisted out
+        of much more commands.</p>
+
+        <p>To improve  readability, we  use the  function <i>lstr</i>,  which is
+        provided  in file  the <i>server/utils.clj</i>  and combines  individual
+        strings into one long string. This allows us to write the shell commands
+        which  are  actually  used  on  the build  server  to  compile  all  the
+        components  of  a  complex  software system,  push  build  artefacts  to
+        production servers, etc. line by line  such that they can be immediately
+        identified  by  a distinctive  color  assigned  by the  editor's  syntax
+        highlighting  extension.  In the  example  above  the character  strings
+        rendered in green are executed on the build server.</p>
+
+        <p>The fourth build step in this example is used to identify whether new
+        changes to  the code base  have been introduced. Only  in such a  case a
+        build process is  started. Otherwise when the  file <i>no_changes</i> if
+        present in the build directory of the remote machine, we return an error
+        code  to  interrupt  all  further  build  steps.  Its  the  job  of  the
+        termination handler  to correctly  propagate the  results which  will be
+        explained in the next section.</p>
+
+        <p>The build instructions in the example above come from the application
+        for which this software was originally developed and can be found in the
+        file  <i>ltenad_config.clj</i> which  is included  in the  bond software
+        framework  for illustration  purposes. In  the given  and the  following
+        examples the instructions have been slightly simplified. We recommend to
+        have a  closer look to  the file <i>ltenad_config.clj</i>  to understand
+        bond's full potential.</p>
+
+        <h3>The Termination Handler</h3>
+        <p>The termination  handler is  always invoked  at the  very end  of the
+        build process. It comes with a similar format as used previously for the
+        declaration  of one  build  step.  The main  difference  is  that it  is
+        executed on the the same (local)  machine where the bond build server is
+        running. This allows to generate  and process useful information such as
+        in example  automatically generated software version  identifiers, fetch
+        build errors and log files, etc.</p>
+
+        <font size="5"><pre class="prettyprint lang-clj">[:identifier-key "local shell command string" timeout :term-cb callback-function]</pre></font>
+
+        <p>For  more complex  functions such  as sending  out status  emails the
+        optional  key value  pair <i>term-cb</i>  allows to  specify a  callback
+        function  which  is  invoked  after the  termination  handler  has  been
+        completed. We will illustrate how it  works with the example in the file
+        <i>sample_config.clj</i>:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+[:cleanup
+ "echo 'do the cleanup'" 20
+ :term-cb ;; clojure handler for sending status email
+ (fn [session error]
+   (let [{:keys [build-uuid build-name]} session
+         current-task (-> session :current-task deref)
+         sw-version "v1.2.3"
+         anything-changed? (not= :anything-changed? (:id current-task))
+         changelog "changelog.txt"
+         [subject mail-txt]
+         (if anything-changed?
+           (if (empty? error)
+             [(format "nightly build %s, sw version %s successful!" build-uuid sw-version)
+              (format (lstr
+                       "Dear Colleagues,\n\n"
+                       "This message is to inform you that the nightly build %s, sw version %s\n"
+                       "has been successfully compiled:\n\n"
+                       "The following changes have been introduced:\n\n"
+                       "%s")
+                      build-uuid sw-version changelog)]
+             [(format "nightly build %s, sw version %s failed!" build-uuid sw-version)
+              (format (lstr
+                       "Dear Colleagues,\n\n"
+                       "This message is to inform you that the nightly build %s, sw version %s\n"
+                       "failed within the build task %s with the following error:\n\n"
+                       "Error: %s\n\n"
+                       "The following changes have been introduced:\n\n"
+                       "%s")
+                      build-uuid sw-version (:id current-task) error changelog)])
+           [(format "no changes detected in nightly build %s" build-uuid)
+            (format (lstr
+                     "Dear Colleagues,\n\n"
+                     "There have been no new changes discovered within the nightly build %s.\n")
+                    build-uuid)])]
+     (println "___ send email: " mail-txt)
+     [(if (= error "processing stopped!")
+        0
+        (sendmail *email-build-status-recipients* subject mail-txt))
+      (hash-args sw-version changelog anything-changed?)]))]
+</pre></font>
+
+        <p>In this sample  code it is assumed that the  software version and the
+        changelog are present.  The associated information must  be generated by
+        the  build process  itself respectively  by  parsing some  of the  build
+        artefacts as  a result of this  process. For an example  how to generate
+        this information refer  to the implementation of the  provided real life
+        configuration file  <i>ltenad_config.clj</i>. Instead  you find  here in
+        lines  7 and  9 bindings  to constants  strings for  simplification. The
+        actual cleanup  handler in  line two  just prints  out a  status message
+        using the <i>echo</i> command which is executed on a local shell.</p>
+
+        <p>The callback handler is more  complex. Three cases are distinguished:
+        First,  no changes  have  been  discovered, so  nothing  has been  done.
+        Second, the  build has  been completed  successfully and  third, changes
+        have been identified but the build failed.</p>
+
+        <p>The  associated  information  is  provided via  two  input  variables
+        to  this  function.  The  variable  <i>error</i>  provides  a  potential
+        error  string.  When  it  is  empty,   it  is  assumed  that  the  build
+        has  been  successfully  completed.  All  other  information  about  the
+        given  build  process  is  provided via  the  hash  map  <i>session</i>.
+        This  is  a  relatively  complex structure  which  is  generated  within
+        the  function   <i>create-build-session</i>  which  can  be   found in the
+        file<i>server/build_task.clj</i>. However, the implementation details do
+        not need to  be considered further here.  All we need is  to extract the
+        proccess  state of  the  current task  which  is done  in  line 6  which
+        dereferences a so called <a href="">Clojure Atom</a> used to mange state
+        in Clojure. From the identifier of the last process state, which will not
+        change anymore  because the build  process is already terminated,  we can
+        conclude whether anything changed which is  the case when we do not find
+        the associated process state in line 8.</p>
+
+        <p>With  this information  we  are  able to  generate  the subjects  and
+        message contents for the given three cases to be used for a status email
+        about the given build.  This is realized within the linex  10 to 34. The
+        status email is only sent out in  case the build has not been stopped to
+        because software  teams are  usually not  interested in  temporary build
+        results.</p>
+
+        <p>Finally  the information  we used  for the  generation of  the status
+        email is returned back to the  bond server implementation and used there
+        to update  the web  page where  the status  information about  all build
+        processes is  displayed. The return  value is  a vector where  the first
+        entry  is always  the error  code of  the termination  callback function
+        where  the  value zero  indicates  that  no  error occured.  The  second
+        argument  is  an  hash-map  with  optional  but  nevertheless  important
+        information about the software version of the given build, the changelog
+        which has  been introduced to  it and whether  or not anything  has been
+        changed. The webinterface  will create status entries only  in case that
+        new change has been introduced which is indicated by setting the boolean
+        variable <i>anything-changed</i> to true.</p>
+
+        <p>The <i>hash-args</i> function acts as a shortcut to generate the hash
+        map:</p>
+
+        <font size="5"><pre class="prettyprint lang-clj">{:sw-version sw-version :changelog changelog ...}</pre></font>
+
+        <p>It    is   based    on    a   macro    definition    in   the    file
+        <i>crossover/macros.clj</i>  and simplifies  the generation  of hash-map
+        where provided value shall  be used as keynames as well.  You can try it
+        out in the repl by evaluating the following test expression:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(let [sw-version "1.2.3"
+      changelog "my change log"
+      anything-changed? true]
+  (hash-args sw-version changelog anything-changed?))
+
+-> {:sw-version 1.2.3, :changelog my change log, :anything-changed? true}
+</pre></font>
+
+        <h3>Bringing it all together, Build Descriptions and the Crontab</h3>
+        <p>We   have   seen   how   build   steps   and   termination   handlers
+        are   structured.  Now   we   will   show  how   to   embed  them   into
+        generation   functions.   In   fact   two  of   them   are   used.   The
+        function create-build-steps-&lt;xyz&gt;  creates a data  structure which
+        includes  the  build  steps  and  termination  function  for  the  build
+        &lt;xyz&gt;.  The  function  create-build-description-&lt;xyz&gt;  calls
+        create-build-steps-&lt;xyz&gt;  and is  used  to incorporate  additional
+        build  parameters such  as branches,  build directory  names, etc.  This
+        allows to parameterize different build types e.g. for different hardware
+        platforms, software versions (development, release) etc. in a simple way
+        without having to repeat all build instructions.</p>
+
+        <p>The  following  explanations  refer  to  the  supplied  example  file
+        <i>sample_config.clj</i>,  which  can be  executed  directly  in a  Unix
+        environment.  It  is  recommended  that you  also  familiarize  yourself
+        with   the   implementation   of  our   first   practical   application,
+        <i>ltenad_config.clj</i>   which   cannot   be  executed   outside   our
+        organization as well.</p>
+
+        <h4>Build Descriptions</h4>
+        <p>Let's start with the function <i>create-build-description-sample-1</i>:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(defn create-build-description-sample-1
+  []
+  (let [build-machine {:host "localhost" :port 22}
+        work-spaces "/mnt/ssd1/ol/nightly-builds"
+        build-name "build-example"
+        current-task (atom nil)
+        date-str (get-date-str)
+        build-uuid (str build-name "_" date-str)
+        build-dir (str work-spaces "/" build-name "/" date-str)
+        log-dir (str (System/getProperty "user.home") "/nightly-build-logs")
+        _ (mkdirs log-dir)
+        build-log-filename (str log-dir "/nightly_" date-str ".log")
+        change-log-filename (str log-dir "/changelog_" date-str ".log")
+        version-filename (str log-dir "/version_" date-str ".log")
+
+        env (hash-args build-name build-uuid build-machine work-spaces build-dir
+                       current-task
+                       build-log-filename
+                       change-log-filename version-filename)]
+    (merge env (create-build-steps-sample-1 env))))
+</pre></font>
+
+        <p>This function  invokes in line  20 <i>create-build-steps-sample-1</i>
+        which    creates   and    returns   the    <i>task-list</i>   and    the
+        <i>termination-handler</i>   using   the   keys   <i>task-list</i>   and
+        <i>terminate</i> within the  returned hash-map. This is  merged with the
+        hash-map <i>env</i> which provides  crutial parameters which describe on
+        which machine the build is executed, in which directory the commands are
+        invoked, what  logfiles to be used  and so on. Most  of these parameters
+        will  be  more  or  less  present  in  every  application,  some  as  in
+        example the  reference to  version and  changelog files  are application
+        dependend.</p>
+
+        <p>Note, that  the current date  and time  is appended to  the universal
+        identifier  of the  build (build-uuid),  the build  directory, changelog
+        and  version  files  which  ensures  that every  build  gets  an  unique
+        identification and  is not overwritten  by future builds.  For debugging
+        purposes it is sometimes helpful  to declare a constant date-time string
+        in line 7  which allows to restart a newly  created build sequence again
+        in an existing build directory.</p>
+
+        <p>In line  3 we  declare the  hostname and port  of the  remote machine
+        where all build steps are executed on. Its required to use
+        <a href="https://www.debian.org/devel/passwordlessssh">public key based authentication</a>
+        because it  will be  impossible to authenticate  via password  for every
+        build step otherwise. You should make sure that this works by typing the
+        following  line on  a  shell on  the  local Unix  system  where Bond  is
+        running:</p>
+
+        <font size="4"><pre class="prettyprint lang-sh">ssh -p 22 localhost "ls /"</pre></font>
+
+        <p>If you  are asked for a  password, public key authentication  did not
+        work. Otherwise you  will get a list  of files of the  root directory of
+        the local machine.</p>
+
+        <p>In line 11 we ensure that a directory where all logfiles are stored
+        does exist. Otherwise this directory is created.</p>
+
+        <h4>Generation of Build Steps</h4>
+        <p>The  construction  of  the  task list  and  the  termination  handler
+        has  already been  explained.  Now  we will  show  how these  structures
+        are  parameterized  and   embedded  in  a  build   description.  In  the
+        example   shown   here,  the   basic   structure   of  the   <i>function
+        create-build-steps-sample-1</i> looks like this:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(defn create-build-steps-sample-1
+  "build steps creation example"
+  [{:keys [build-name build-uuid build-machine work-spaces build-dir
+           current-task build-log-filename change-log-filename version-filename]}]
+  (let [cleanup-script (-> "cleanup.py" get-resource quote-string-for-echoing)
+
+        task-list
+        (filter
+         identity
+         (list
+          ;; task list elements
+          ;; ...
+          ))
+
+        terminate
+        [:cleanup
+         "echo 'do the cleanup'" 20
+         :term-cb ;; clojure handler for sending status email
+         (fn [session error]
+           ;; termination handler definitions
+           ;; ...
+           )]]
+    (hash-args task-list terminate)))
+</pre></font>
+
+        <p>The  <a href="https://clojuredocs.org/clojure.core/filter">filter</a>
+        function  from  Clojure's  core  namespace which  is  invoked  in  lines
+        8  and  following  is  only  used here  as  a  placeholder.  Its  second
+        function  argument defines  which  elements are  filtered  out when  its
+        invocation with a  given element returns logical false.  The function <a
+        href="https://clojuredocs.org/clojure.core/identity">identity</a> simply
+        returns  any   given  argument.  This   allows  us  to   easily  disable
+        certain  elements   in  a  task   list  by   enclosing  it  by   the  <a
+        href="https://clojuredocs.org/clojure.core/comment">comment function</a>
+        whose return value nil is equivalent  to logical false and therefore the
+        commented  out element  is  in fact  filtered out  from  the task  list.
+        Without the filtering we would end up with nil elements in the task list
+        wich should be avoided.</p>
+
+        <p>Filtering   can  also   be  realized   by  replacing   the  predicate
+        <i>identity</i>  in  line   9  with  a  conditional   expression  as  in
+        example:</p
+
+        <font size="5"><pre class="prettyprint lang-clj">#(= (first %) :second)</pre></font>
+
+        <p>This will  filter out all items  from the task list  except the build
+        step <i>:second</i>. These options for filtering specific items from the
+        task list can be very useful for development and debugging purposes.</p>
+
+        <p>The  function   <i>function  create-build-steps-sample-1</i>  expects
+        as  sole   input  parameter  a   hashmap  whose  key  value   pairs  are
+        associated  with   all  required   build  paramteres  which   have  been
+        generated in  the the  function <i>create-build-description-sample-1</i>
+        which   we    already   discussed.   Within    line   3   and    4   the
+        entries   of   this   hashmap   are    extracted   by   so   called   <a
+        href="https://clojure.org/guides/destructuring">desctructuring</a>. This
+        allows to  directly create bindings between  the keys and the  values of
+        the build parameter hash map which we can later use in the generation of
+        the task list and the termination handler.</p>
+
+        <p>The return value is generated by reverse process where we construct a
+        hash  map  from the  provided  local  variables.  It contains  only  two
+        elements, the <i>task list</i> and the <i>termination handler</i>. As we
+        have already seen,  these are combined with the other  parameters in the
+          function create-build-description in a hash map data structure. </p>
+
+        <h4>The Cron Table</h4>
+        <p>This   data  structure   is   usually   created  immediately   before
+        starting  the  build.  In  our  application,  it  is  triggered  usually
+        time-controlled overnight.  The start times  are defined in  a so-called
+        <i>cron  table</i>,  which  is  based  on the  nomenclature  of  the  <a
+        href="https://en.wikipedia.org/wiki/Cron">cron  daemon</a>   used  under
+        Unix.</p>
+
+        <p>The  <i>crontab</i>  also  provides  a  list  of  all  extings  build
+        descriptions  which do  not necessarily  always  have to  be started  by
+        <i>cron</i>. Instead they can be started respectively restarted manually
+        via the web interface or  triggered externally by sending the associated
+        http  post request.  So  the <i>crontab</i>  informs  users which  build
+        descriptions  are present  even if  all  of its  elements are  disabled.
+        We  explain  its  structure  using  the  real  life  configuration  file
+        <i>ltenad_config.clj</i>:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(def cron-build-descriptions
+  [{:m 0 :h 00 :dom false :mon false :dow false :desc create-build-description-mdm9607-bl2_2_0}
+   {:m 0 :h 05 :dom false :mon false :dow false :desc create-build-description-mdm9607-bl2_2_0-quectel}
+   {:m 0 :h 20 :dom false :mon false :dow false :enabled true :desc create-build-description-mdm9607-bl2_0_1}])
+</pre></font>
+
+        <p>In the given example three different build jobs are defined which all
+        end up using the same task list  definition. As we can see, the variable
+        <i>cron-build-descriptions</i> is  a vector in  which each element  is a
+        hash-map that contains  a build description. An entry  can be completely
+        disabled if the  value for the key <i>:enabled</i> is  set to false. The
+        entry for the  key <i>:desc</i> contains the generator  function for the
+        respective build description.</p>
+
+        <p>The remaining  parameters describe  the respective  times at  which a
+        build  is started.  In  the  given example  these  are  at midnight,  at
+        5:00  a.m.  in the  morning  and  at 8:00  p.m.  in  evening by  setting
+        the  keys <i>:m</i>  for the  respective  minute and  <i>:h</i> for  the
+        respective hour.  The additional keys  <i>:dom</i> (day of  month, range
+        1-31), <i>:mon</i>  (the numeric  value for the  month, range  1-12) and
+        <i>:dow</i> (the numeric value for the  day of week (range 1-7) allow to
+        further restrict  the set of start  times. When they are  set to logical
+        false  all values  apply and  the build  is triggered  every day  at the
+        specified hour and minute as in the given example.</p>
+
+        <p>The variable  <i>cron-build-descriptions</i> is thus  the fundamental
+        basic definition of all build descriptions  and the only symbol that the
+        bond  server actually  references from  the namespace  server.config. In
+        principle, users are free to change  all other definitions as they wish,
+        but we recommend following the given examples.</p>
+
+      </div>
+    </div>
+
+    <script src="prettify.js"></script>
+    <script src="lang-clj.js"></script>
+    <script>
+      window.onload = (function(){ prettyPrint(); });
+    </script>
+
+  </body>
+</html>

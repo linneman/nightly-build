@@ -1,0 +1,337 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Nightly Build Server</title>
+    <meta name="author" content="Otto Linnemann">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+
+    <link rel="stylesheet" type="text/css" href="css/project.css" />
+    <link rel="stylesheet" type="text/css" href="css/auth.css" />
+    <link rel="stylesheet" type="text/css" href="css/repl.css" />
+    <link rel="stylesheet" type="text/css" href="css/button.css">
+    <link rel="stylesheet" type="text/css" href="css/flatbutton.css">
+    <link rel="stylesheet" type="text/css" href="css/css3button.css">
+    <link rel="stylesheet" type="text/css" href="css/gh-fork-ribbon.css" />
+    <link rel="stylesheet" type="text/css" href="css/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="css/tab.css" />
+    <link rel="stylesheet" type="text/css" href="css/tabbar.css" />
+    <link rel="stylesheet" type="text/css" href="css/buildtable.css" />
+    <link rel="stylesheet" type="text/css" href="css/build-configurations.css" />
+    <link rel="stylesheet" type="text/css" href="css/crontable.css" />
+    <link rel="stylesheet" type="text/css" href="css/usertable.css" />
+    <link rel="stylesheet" type="text/css" href="css/custombutton.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css">
+    <link rel="stylesheet" type="text/css" href="css/menuitem.css">
+    <link rel="stylesheet" type="text/css" href="css/menuseparator.css">
+    <link rel="stylesheet" type="text/css" href="css/menubutton.css">
+    <link rel="stylesheet" type="text/css" href="css/menubar.css">
+    <!--[if IE]>
+        <link rel="stylesheet" type="text/css" href="mainpanel.css" media="all">
+        <![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+  </head>
+
+  <body>
+
+    <div id="header-container">
+      <div id="header">
+        <div id="header-left">Nightly Build Server</div>
+        <div id="header-right"><div id="login-logo"></div></div>
+      </div>
+
+      <!-- Decorated menu bar definition begins here -->
+      <div id="menubar" class="goog-menubar format-lightborder">
+        <div id="FileButton" class="goog-menu-button" title="File">
+          <span style="vertical-align:middle">File</span>
+          <!-- This DIV will be auto-decorated with a menu. -->
+          <div id="fileMenu" class="goog-menu">
+            <div class="goog-menuitem" id="new-config">New</div>
+            <div class="goog-menuitem" id="load-config">Load Configuration...</div>
+            <div class="goog-menuitem" id="save">Save</div>
+            <div class="goog-menuitem" id="save-as">Save As...</div>
+            <div class="goog-menuitem" id="revert-config">Revert</div>
+            <div class="goog-menuseparator"></div>
+            <div class="goog-menuitem" id="activate-config">Activate Current Configuration</div>
+          </div>
+        </div>
+        <div id="EditButton" class="goog-menu-button" title="Edit">
+          <span style="vertical-align:middle">Edit</span>
+          <!-- This DIV will be auto-decorated with a menu. -->
+          <div id="evalMenu" class="goog-menu">
+            <div class="goog-menuitem" id="forward-slurp-sexp">Forward Slurp S-Exp ( C-) )</div>
+            <div class="goog-menuitem" id="split-sexp">Split S-Expr ( C-s )</div>
+          </div>
+        </div>
+        <div id="EvalButton" class="goog-menu-button" title="Evaluate">
+          <span style="vertical-align:middle">Evaluate</span>
+          <!-- This DIV will be auto-decorated with a menu. -->
+          <div id="evalMenu" class="goog-menu">
+            <div class="goog-menuitem" id="evaluate-all">Evaluate All Expressions</div>
+            <div class="goog-menuitem" id="evaluate-before-point">Evaluate S-Expr before point (
+            C-e )</div>
+          </div>
+        </div>
+        <div id="HelpButton" class="goog-menu-button" title="Help">
+          <span style="vertical-align:middle">Help</span>
+          <div id="helpMenu" class="goog-menu">
+            <div class="goog-menuitem" id="help-clojure-intro">Introduction to Clojure</div>
+            <div class="goog-menuitem" id="help-repl">Using the Online-REPL</div>
+            <div class="goog-menuitem" id="help-build-descriptions">Creating Build Descriptions</div>
+            <div class="goog-menuitem" id="help-ext-repl">Connecting an External REPL</div>
+            <div class="goog-menuitem" id="help-api">API Docs</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="setup-popup" class="setup-popup" tabindex="0">
+      <div class="loginbuttons">
+        <div id="login-logo-big"></div>
+      </div>
+      <div id="popup-name" class="popup-info-fields"></div>
+      <div id="popup-email" class="popup-info-fields"></div>
+      <div id="popup-role" class="popup-info-fields"></div>
+      <div class="loginbuttons">
+        <div id="popup-login-logout" class="popup-buttons goog-css3-button"
+             title="login-logout">Logout</div>
+      </div>
+      <hr />
+      <div class="loginbuttons">
+        <div id="popup-reset-password" class="popup-buttons goog-css3-button"
+             title="Reset Password">Reset Password</div>
+      </div>
+      <div class="loginbuttons">
+        <div id="popup-forgot-password" class="popup-buttons goog-css3-button"
+             title="forgot-password">Forgot Password</div>
+      </div>
+    </div>
+
+    <div id="enter-user-passwd-dialog"  class="nightly-build-dialog">
+      <form>
+        <table>
+          <tr><td>User name or email:</td><td><input type="text" id="login-name" class="login-field"><br/></td></tr>
+          <tr><td>Password:</td><td><input type="password" id="login-password" class="login-field"><br/></td></tr>
+          <tr><td>&nbsp;</td></tr>
+          <tr>
+            <td>
+              <div id="confirm-login" class="goog-flat-button goog-flat-button-disabled project-alpha-dialog-button" title="Login">Login</div>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div id="reset-passwd-dialog"  class="nightly-build-dialog">
+      <form>
+        <table>
+          <tr><td>Password:</td><td><input type="password" id="new-passwd-1" class="login-field"><br/></td></tr>
+          <tr><td>Repeat Password:</td><td><input type="password" id="new-passwd-2" class="login-field"><br/></td></tr>
+          <tr><td>&nbsp;</td></tr>
+          <tr>
+            <td>
+              <div id="confirm-reset-passwd" class="goog-flat-button goog-flat-button-disabled project-alpha-dialog-button" title="Reset">Reset</div>
+              <div id="cancel-reset-passwd" class="goog-flat-button goog-flat-button-disabled project-alpha-dialog-button" title="Cancel">Cancel</div>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div id="forgot-passwd-dialog"  class="nightly-build-dialog">
+      <p>An activation link will be sent to your email address.</p>
+      <form>
+        <table>
+          <tr><td>User name or email:</td><td><input type="text" id="forgot-pw-name-or-email" class="login-field"><br/></td></tr>
+          <tr><td>&nbsp;</td></tr>
+          <tr>
+            <td>
+              <div id="confirm-forgot-passwd" class="goog-flat-button goog-flat-button-disabled
+              project-alpha-dialog-button" title="Send New Password">Send</div>
+              <div id="cancel-forgot-passwd" class="goog-flat-button goog-flat-button-disabled
+              project-alpha-dialog-button" title="Cancel">Cancel</div>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div id="save-as-dialog"  class="nightly-build-dialog">
+      <form>
+        <table>
+          <tr><td>Filename:</td><td><input type="text" id="save-as-filename" class="login-field"><br/></td></tr>
+          <tr><td>&nbsp;</td></tr>
+          <tr>
+            <td>
+              <div id="confirm-save-as" class="goog-flat-button goog-flat-button-disabled" title="Save-as-OK">OK</div>
+              <div id="cancel-save-as" class="goog-flat-button goog-flat-button-disabled" title="Save-as-CANCEL">CANCEL</div>
+            </td>
+            <td></td>
+          </tr>
+        </table>
+      </form>
+    </div>
+
+    <div id="header-separation"></div>
+
+    <div class="content">
+
+      <div id="nightly-build-tab-menu" class="goog-tab-bar goog-tab-bar-start">
+        <div id="logo"><img src="img/logo.png" width="120"></div>
+        <div id="build-status" class="goog-tab goog-tab-selected ">Build Status</div>
+        <div id="cron-jobs" class="goog-tab">Cron Jobs</div>
+        <div id="configuration" class="goog-tab">Configurations</div>
+        <div id="advanced" class="goog-tab">Advanced</div>
+        <div id="administration" class="goog-tab">Administration</div>
+        <div id="about" class="goog-tab">About</div>
+      </div>
+      <div id="nightly-build-tab-content" class="goog-tab-content">
+        <div class="tab-bar-content nightly-tabpane" id="tab-status">
+          <h2>List of all Build Processes</h2>
+
+          <div id="request_build_processes" class="request_progress">
+            <h3>Loading Build Processes Table ...</h3>
+            <img src="img/spinner.gif">
+          </div>
+
+          <table id="list-of-all-build-processes" class="nightly-build-table">
+            <tr id="header-row">
+              <th class="id" id="id">Build ID</th>
+              <th class="version" id="version">SW Version</th>
+              <th class="state" id="state">State</th>
+              <th class="details" id="details">Details</th>
+            </tr>
+            <tr id="prototype-row">
+              <td class="id" id="id">build_bl1_1_2019-11-06</td>
+              <td class="version" id="version"></td>
+              <td class="state" id="state">State</td>
+              <td class="details" id="details"></td>
+            </tr>
+          </table>
+
+          <div id="build-console-dialog"  class="nightly-build-dialog">
+            <div id="build-console"><p></p></div>
+          </div>
+        </div>
+
+        <div class="tab-bar-content nightly-tabpane" id="tab-cron">
+          <h2>Cronjob Configuration</h2>
+
+          <table id="list-of-all-cron-jobs" class="cron-table">
+            <tr id="header-row">
+              <th class="enabled" id="enabled">Enabled</th>
+              <th class="h" id="h">Hour</th>
+              <th class="m" id="m">Minute</th>
+              <th class="dom" id="dom">Day of Month</th>
+              <th class="mon" id="mon">Month</th>
+              <th class="dow" id="dow">Day of Week</th>
+              <th class="desc" id="desc">Build Description</th>
+              <th class="action" id="action">Action</th>
+            </tr>
+            <tr id="prototype-row">
+              <td class="enabled" id="enabled"><form><input type="checkbox" value="1"></form></td>
+              <td class="h" id="h"> <form><input type="number" value="0"></form></td>
+              <td class="m" id="m"> <form><input type="number" value="0"></form></td>
+              <td class="dom" id="dom"> <form><input type="number" value="1"></form></td>
+              <td class="mon" id="mon"> <form><input type="number" value="1"></form></td>
+              <td class="dow" id="dow"> <form><input type="number" value="1"></form></td>
+              <td class="desc" id="desc"> <form><input type="text" value="ABC"></form></td>
+              <td class="action" id="action">not implemented</td>
+            </tr>
+          </table>
+
+          <div id="publish-crontab-button" class="goog-css3-button" title="Publish Crontab">Publish</div>
+          <div id="reset-crontab-button" class="goog-css3-button" title="Reset Crontab">Reset</div>
+
+        </div>
+
+        <div class="tab-bar-content nightly-tabpane" id="tab-build-config">
+          <h2>Build Configuration</h2>
+          <p>build configuration file: <span id="config-file" style="font-weight:bold"></span></p>
+          <div contenteditable="true" id="editMe"><p></p></div>
+        </div>
+
+        <div class="tab-bar-content nightly-tabpane" id="tab-advanced">
+          <div id="repl-pane">
+            <div id="repl">
+              <h3>Backend Clojure REPL</h3>
+              <p>Use the following Emacs command to connect to the Clojure REPL:</p>
+              <code>C-M cider-connect host: localhost port: 7888</code>
+              <p>Refer to <a href="connecting-an-external-repl.html">this help page</a> for further
+                information how to use several Integrated Devlopment Environments.</p>
+              <p style="padding-bottom: 1cm"> </p>
+              <h3>ClojureScript REPL</h3>
+              <p>Enter the following command in your development shell and reload the page:</p>
+              <code>lein trampoline run -m clojure.main browser_repl.clj</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-bar-content nightly-tabpane" id="tab-administration">
+          <h2>User Management</h2>
+          <table id="list-of-all-users" class="user-table">
+            <tr id="header-row">
+              <th class="select" id="select"></th>
+              <th class="name" id="name">Login Name</th>
+              <th class="email" id="email">Email</th>
+              <th class="role" id="role">Role</th>
+            </tr>
+            <tr id="prototype-row">
+              <td class="select" id="select"><form><input type="checkbox" value="0"></form></td>
+              <td class="name" id="name"> <form><input type="text" value="Admin"></form></td>
+              <td class="email" id="email"> <form><input type="text" value="admin@nightly-build.org"></form></td>
+              <td class="role" id="role">Admin</td>
+            </tr>
+          </table>
+
+          <div id="publish-user-table-button" class="goog-css3-button" title="Publish User List">Publish</div>
+          <div id="reset-user-table-button" class="goog-css3-button" title="Reset User List">Reset</div>
+          <div id="add-user-button" class="goog-css3-button" title="Add User">Add User</div>
+          <div id="delete-selected-users-button" class="goog-css3-button" title="Delete Selected Users">Delete Selected Users</div>
+        </div>
+
+        <div class="tab-bar-content nightly-tabpane" id="tab-about">
+          <h2>Bond</h2>
+          <h3>A Functional Programming Environment for the Automatic Creation of Software Release Candidates</h3>
+          <hr/>
+          <p>Vist the <a href="https://linneman.github.io/nightly-build">project website</a> for
+          more information or clone the <a href="http://github.com/linneman/nightly-build">source code</a>
+          from Github.</p>
+          <div id="vertical-space-1"></div>
+          <p>This software stands under the terms of the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licence</a>.</p>
+          <p>Copyright (C) 2019-2020, Otto Linnemann</p>
+        </div>
+
+      </div>
+      <!-- Use goog-tab-bar-clear to separate the tabs from the content. -->
+      <div class="goog-tab-bar-clear"></div>
+
+    </div>
+
+    <div id="nightly-build-messages">
+      <div id="build-console-title">Build Output for</div>
+      <div id="changelog-console-title">Changeset for</div>
+    </div>
+    <div id="global-scripts">
+      <script type="text/javascript">
+        var CLOSURE_NO_DEPS = true;
+      </script>
+      <script src="debug.js" type="text/javascript"></script>
+      <script type="text/javascript">client.repl.connect()</script>
+    </div>
+
+  </body>
+</html>

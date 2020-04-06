@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!-- saved from url=(0053)http://practice.kokonino.net/posts/ring-with-ssl-only -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link href="./SSL Only web app with Clojure, Noir and Ring_files/zh_style.css" rel="stylesheet" type="text/css"><title>SSL Only web app with Clojure, Noir and Ring</title><link href="http://practice.kokonino.net/rss" rel="alternate" title="Practice" type="application/rss+xml"></head><body><div id="container"><div id="content"><div class="entry"><div class="post-full"><h2 class="post-title">SSL Only web app with Clojure, Noir and Ring</h2><div class="post"><p>I recently needed to make sure that my
+<a href="http://www.clojure.org/">Clojure</a> web application was listening for
+SSL connections only.  This is the best way to make sure that client
+credentials are not accidentally sent over an un-encrypted connection.</p>
+
+<p>First, I needed to convert my OpenSSL generated self-signed
+certificate to a Java Key Store.  I found <a href="http://www.herongyang.com/Cryptography/keytool-Import-Key-keytool-importkeystore-Command.html">Dr. Herong Yang's
+Tutorial</a>
+on the subject to be the best documentation on that step.  </p>
+
+<p>I have shorted it down to the following shell script, which takes two
+arguments; the key and the cert, both in PEM file format.</p>
+
+<pre><code>#!/bin/sh
+set -e 
+
+KEYFILE=$1
+CERTFILE=$2
+
+# first we need to merge the keys into a pkcs12 keystore
+openssl pkcs12 -export -inkey $KEYFILE \
+               -in $CERTFILE -out key_crt.p12 \
+               -name key_crt \
+               -password pass:thisisahardcodedpassword
+
+keytool -importkeystore -srckeystore key_crt.p12  \
+         -srcstoretype pkcs12 -srcstorepass supersecret -srcalias key_crt  \
+         -destkeystore key_crt.jks -deststoretype jks  \
+         -deststorepass thisisahardcodedpassword
+</code></pre>
+
+<p>I can then call that script on the key and cert my sysdamin utility
+generated for me (we're running this on an appliance).  It creates a
+Java Key Store in the current directory, called <code>key_crt.jks</code>.</p>
+
+<p>I'm using <a href="http://www.webnoir.org/">Noir</a> which itself uses
+<a href="https://github.com/mmcgrana/ring">Ring</a> which sits on top of
+<a href="http://www.eclipse.org/jetty/">Jetty</a>.  The Noir layer requires a
+port argument, which it passes the the ring constructor.  If you then
+pass a <code>:jetty-options</code> map with <code>:ssl?</code> true and an <code>:ssl-port</code> value, it
+will open up both ports.</p>
+
+<p>So what I did was write a function which will remove all Non-SSL
+connectors from the <code>org.mortbary.jetty.Server</code> object, and pass that
+in as my <code>:configurator</code> argument in the <code>:jetty-options</code> map:</p>
+
+<pre><code>(defn remove-non-ssl-connectors [server]
+  (doseq [c (.getConnectors server)]
+    (when-not (or (nil? c) (instance? org.mortbay.jetty.security.SslSocketConnector c))
+      (.removeConnector server c)
+  ))
+  server)
+</code></pre>
+
+<p>Finally, my call to <code>noir.server/start</code> looks like this:</p>
+
+<pre><code>(noir.server/start 8443 {:mode :dev
+                         :jetty-options {:configurator remove-non-ssl-connectors
+                                         :ssl? true
+                                         :ssl-port 8443
+                                         :keystore "/path/to/my/key_cert.jks"
+                                         :key-password "thisisahardcodedpassword"}
+                         :ns 'my.app})
+</code></pre>
+
+<p>The result is that my Noir app listens on port 8443 for SSL
+connections, and only that port, and only does SSL.  Woot.</p>
+<div class="post-footer"><p>Posted: 2012/02/27</p></div></div></div></div><section id="sidebar"><h1>Practice</h1><p id="tagline">A place to share</p><nav><ul><li><a href="http://practice.kokonino.net/">Home</a></li><li><a href="http://practice.kokonino.net/about">About</a></li><li><a href="http://practice.kokonino.net/feedback">Feedback</a></li></ul></nav></section></div><div id="footer"><p>Premature reification is the root of all evil.</p></div></div></body></html>

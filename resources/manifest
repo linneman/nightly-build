@@ -1,0 +1,6 @@
+;; these files will be installed into the given folders under the home directory
+
+build-descriptions/ltenad_config.clj build-descriptions/
+build-descriptions/sample_config.clj build-descriptions/
+local_settings.clj .nightly-build/
+keys/key_crt.jks .nightly-build/

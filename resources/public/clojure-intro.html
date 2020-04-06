@@ -1,0 +1,630 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Nightly Build Server</title>
+    <meta name="author" content="Otto Linnemann">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+
+    <link rel="stylesheet" type="text/css" href="css/project.css" />
+    <link rel="stylesheet" type="text/css" href="css/auth.css" />
+    <link rel="stylesheet" type="text/css" href="css/repl.css" />
+    <link rel="stylesheet" type="text/css" href="css/button.css">
+    <link rel="stylesheet" type="text/css" href="css/flatbutton.css">
+    <link rel="stylesheet" type="text/css" href="css/css3button.css">
+    <link rel="stylesheet" type="text/css" href="css/gh-fork-ribbon.css" />
+    <link rel="stylesheet" type="text/css" href="css/dialog.css" />
+    <link rel="stylesheet" type="text/css" href="css/tab.css" />
+    <link rel="stylesheet" type="text/css" href="css/tabbar.css" />
+    <link rel="stylesheet" type="text/css" href="css/buildtable.css" />
+    <link rel="stylesheet" type="text/css" href="css/build-configurations.css" />
+    <link rel="stylesheet" type="text/css" href="css/crontable.css" />
+    <link rel="stylesheet" type="text/css" href="css/usertable.css" />
+    <link rel="stylesheet" type="text/css" href="css/custombutton.css">
+    <link rel="stylesheet" type="text/css" href="css/menu.css">
+    <link rel="stylesheet" type="text/css" href="css/menuitem.css">
+    <link rel="stylesheet" type="text/css" href="css/menuseparator.css">
+    <link rel="stylesheet" type="text/css" href="css/menubutton.css">
+    <link rel="stylesheet" type="text/css" href="css/menubar.css">
+    <link rel="stylesheet" type="text/css" href="css/prettify.css">
+    <link rel="stylesheet" type="text/css" href="css/clojurecode.css">
+    <!--[if IE]>
+        <link rel="stylesheet" type="text/css" href="mainpanel.css" media="all">
+        <![endif]-->
+    <!--[if lt IE 9]>
+        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+  </head>
+
+  <body>
+
+    <div id="header-container" class="sticky">
+      <div id="header">
+        <div id="header-left">Nightly Build Server</div>
+      </div>
+      <div id="header-separation"></div>
+
+      <div id="nightly-build-tab-menu" class="goog-tab-bar goog-tab-bar-start">
+        <div id="logo"><img src="img/logo.png" width="120" style="margin-top:-15px"></div>
+        <h3>Help Contents</h3>
+        <table>
+          <tr><td><a href="clojure-intro.html">Introduction</a></td></tr>
+          <tr><td><a href="online-repl.html">The Online REPL</a></td></tr>
+          <tr><td><a href="creating-build-descriptions.html">Build Descriptions</a></td></tr>
+          <tr><td><a href="connecting-an-external-repl.html">External REPL</a></td></tr>
+          <tr><td><a href="doc/api/index.html">API Docs</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="nightly-tabpane doc">
+        <h2>Introduction to Clojure</h2>
+
+        <h3  id="why_clojure">Why  Clojure?</h3>  <p>The  Bond  Nightly  Release
+        Candidate Automation  System is  entirely based  on Clojure,  a powerful
+        functional programming  language which  targets mainly the  Java Virtual
+        Machine (JVM). Unlike  other solutions of this kind, Bond  does not come
+        with a distinctive Domain Specific Language (DSL) for the implementation
+        of build sequences, also known as  build pipelines, but instead uses the
+        same  programming language  to  implement these.  This allows  increased
+        flexibility and  ultimately more  consise formulation of  software build
+        processes. Furthermore,  since the implementation of  the control server
+        and of  build sequences descriptions are  based on the same  idioms, the
+        build runtime system itself can be extended relatively easily.</p>
+
+        <p>Clojure offers numerous other advantages. The most important of these
+          in this context is its  REPL based runtime development environment which
+          allows to  make changes to the  implementation without the need  to stop
+          and recompile  a given  application. The result  is an  extremly compact
+          runtime  implementation for  the  build execution  of approximately  500
+          lines of code only.</p>
+
+        <p>However, it is  of course necessary to get familiar  with the Clojure
+          programming system  at least to some  extent. The purpose of  these help
+          pages is  to help newcomers  to get  started with the  build description
+          syntax and the basics of Clojure as quickly as possible.</p>
+
+        <p>Please note, however, that this is not a comprehensive description of
+          the Clojure programming language and  its development tools. This manual
+          is limited  to the minimum  necessary to  understand the concept  of the
+          'build descriptions' which are most relevant in this context.</p>
+
+        <p>For further information we recommend the website
+          <a href="http://clojure.org">clojure.org</a> as first point of entry.
+          For those who prefer a printed manual we recommend the titles
+          <a href="https://pragprog.com/book/shcloj3/programming-clojure-third-edition">Programming
+            Clojure from Alex Miller, Stuart Halloway and Aaron Bedra</a> for
+          an easy start and
+          <a href="http://www.joyofclojure.com/">The Joy of Clojure from Stuart Halloway</a>
+          for a discussion of more advanced concepts. For a brief introduction
+          about the reasoning of the Clojure Programming Language we encourage
+          you to listen to the lecture
+          <a href="https://www.youtube.com/watch?v=-6BsiVyC1kM">The Value of Values</a>
+          from the Creator of Clojure himself, Rich Hickey.</p>
+
+        <h3>First Steps</h3>
+
+        <p>The  infamous hello  world program  in Clojure  is just  one line  of
+        code:</p>
+
+        <font size="5"><pre class="prettyprint lang-clj">(println "Hello, World!")</pre></font>
+
+        <p>It is  immediately noticeable that,  in contrast to  most programming
+          languages, the opening  parenthesis is placed before  the function name.
+          This may  seem strange at  first sight. But  there are good  reasons for
+          this notation. It is because Clojure is actually a dialect of Lisp whose
+          specific  characteristic is  that all  instructions including  those for
+          control flow are  expressed in the form of data  structures. This allows
+          to provide  a much simpler  parser and  compiler stage which  is usually
+          integrated in the  programming environment itself and  mostly refered to
+          as  REPL which  stands for  Read Eval  Print Loop.  Its efficiency  will
+          become clear later on.</p>
+
+        <h3>Core Data Structures</h3>
+
+        <h4>Lists</h4>
+        <p>The above  instruction which prints  out 'Hello, World!'  is actually
+          the most  fundamental list  data structure which  is inherited  from the
+          Lisp programming language and enclosed by paranthesis and whose elements
+          are separated by  a blank characters. By default the  first element of a
+          list  denotes  a  function  name  and the  remaining  elements  are  the
+          arguments  which are  passed  to  that function  call.  Lisp stands  for
+          nothing else than <i>LISt Processing</i> for this reason.</p>
+        <p>If we prevent the function <span  style="font-family:monospace;">println</span>
+          in  the  above example  from  being  evaluated,  then  we get  the  list
+          structure itself.  This can be  done by  preceding an apostrophe  to the
+          list:</p>
+
+        <font size="5"><pre class="prettyprint lang-clj">'(println "Hello, World!")</pre></font>
+
+        <p>But lists can be also expressed explicitly by the list function as in
+        example:</p>
+
+        <font size="5"><pre class="prettyprint lang-clj">(list 1 2 "hello")</pre></font>
+
+        <p>Note that the list  elements do not need all to be  of the same type.
+        In the above example the first  two elements are of numeric integer type
+        while the last  element is a string.  The elements of a  list are single
+        connected as depicted in the following illustration:</p>
+
+        <p style="text-align:center;"><img src="img/list.png"></p>
+
+        <p>It  follows that  we  can  efficiently append  elements  only at  the
+        beginning of the list because appending an  element to the end of a list
+        would require to iterate over all elements. Three fundamental operations
+        operation are provided not only for lists but for all data structures in
+        Clojure:</p>
+        <dl>
+          <dt>first</dt>
+          <dd>Returns the first element of a list.</dd>
+
+          <dt>rest</dt>
+          <dd>Returns a new list with all elements except the first.</dd>
+
+          <dt>conj</dt>
+          <dd>Appends an element efficiently. In case of lists the element is appended to the head
+            of the list.</dd>
+        </dl>
+
+        <p>The following examples illustrate how these operations are used:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(first (list 1 2 "hello"))   -> 1
+(rest  (list 1 2 "hello"))   -> (2 "hello")
+(conj  (list 1 2 "hello") 0) -> (0 1 2 "hello")</pre></font>
+
+        <p>The build  sequences in Bond are  just Clojure lists or  build steps.
+          When a step has been successfully  executed the lists of remaining build
+          steps is replaced by the rest of  of the current build step list and the
+          processing goes on until all elements have been executed.</p>
+
+        <h4>Vectors</h4>
+        <p>Like lists vectors  provide a ordered sequence of  elements. They are
+          declared with square brackets. On contrast to lists they allow to access
+          efficiently arbitrary elements. Furthermore new elements are appended to
+          the end of  a vector. The following examples illustrate  how vectors are
+          used:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+[1 2 "hello"]            -> [1 2 "hello"]
+(first [1 2 "hello"])    -> 1
+(rest [1 2 "hello"])     -> (2 "hello")
+(subvec [1 2 "hello"] 1) -> [2 "hello")
+(conj [1 2 "hello"] 0)   -> [1 2 "hello" 0])
+(nth [1 2 "hello"] 1)    -> 2</pre></font>
+
+        <p>Note that  the rest function returns  a list instead of  a vector and
+          needs to  iterate over all list  elements. It is recommended  to use the
+          function subvector  instead which  operates on vectors  specifically and
+          more efficiently. The function conj appends in the given case to the end
+          of the vector.</p>
+        <p>Lists  are usually  more appropriate  when  all elements  need to  be
+          iterated. They provide a stack based,  first in, first out (fifo) access
+          characteristics. As already explained functions are just lists where the
+          first element  denontes the function name.</p>  <p>Vectors are preferred
+          when elements need to be accessed  by index. They provide an queue based
+          access  characteristics (lifo).  Vectors  are used  to declare  function
+          arguments and local bindins as we will see later on.</p>
+
+        <h4>Maps</h4>
+        <p>Maps are collection data types that  map keys to values. The keys and
+        the values  can be arbitraty Clojue  data types. Maps are  declared with
+        curly brackets as illustrated below:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(def day-of-week {1 "Monday" 2 "Thuesday" 3 "Wednesday" 4 "Thursday"
+                  5 "Friday" 6 "Saturday" 7 "Sunday"})
+(day-of-week 1)  -> "Monday"</pre></font>
+
+        <p>In the given  example we define the variable days-of-week  with a map
+        where each  day of week  can be  accessed via its  associated index.</p>
+        <p>In many cases the consideration is  to use an unique identifier for a
+        specific  value  as key.  With  the  so called  <i>keyword</i>,  Clojure
+        provides a specific data type for this:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(def weekday-index {:Monday 1 :Thuesday 2 :Wednesday 3 :Thursday 4
+                    :Friday 5 :Saturday 6 :Sunday 7})
+(weekday-index :Monday)  ->  1
+(:Monday weekday-index)  ->  1</pre></font>
+
+        <p>Unlike the previously  used strings and integer  key values, keywords
+        can be  used like function invocations  as illustrated in line  4 in the
+        previous example. So  the third and the fourth line  in this example are
+        synomymous</p>
+        <p>The data structures can be arbitrarily nested. In example the value in
+          vectors can be maps which can include another map and so on. This allows
+        to define rather complex data models.</p>
+        <p>All data in Clojure is managed  in a <i>functional</i> or, as denoted
+        in  Clojure,  <i>persistent</i>  way.  That means  that  by  default  an
+        existing  variable is  never  changed  when new  elements  are added  or
+        removed.  We  illustrate this  behavior  in  following example  using  a
+        map:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(def rgb-colors-1 {:red [255 0 0] :green [0 255 0]})
+(def rgb-colors-2 (assoc rgb-colors-1 :blue [0 0 255]))
+rgb-colors-1 -> {:red [255 0 0] :green [0 255 0]}
+rgb-colors-2 -> {:red [255 0 0] :green [0 255 0] :blue [0 0 255]}</pre></font>
+
+        <p>Note that the definition in line  3 is not changed by the association
+        of  a  new  element  in  line  4.  Instead  the  data  in  the  variable
+        <i>rgb-colors-1</i>  is  just  extended  and the  values  for  the  keys
+        <i>:red</i>  and   <i>:green</i>  are  re-used   in  <i>rgb-color-2</i>.
+        Operations where  the value of a  variable needs to be  acutally changed
+        are  required  to  be  expressed   explicitly  as  a  transaction.  Such
+        values are  denoted as <i>state</i>  and require special  attention when
+        used  in  multi-threaded operations  in  all  programming languages.  On
+        contrast, Clojure  uses functional and  thread save data  types wherever
+        possible.</p>
+
+        <h3>Functions</h3>
+        <p>In  Clojure  functions  are  first-class  and  can  be  passed-to  or
+        returned-from  other functions.  In the  following example  we define  a
+        simple function which  adds two variables and assign it  to the variable
+        add:</p>
+
+        <font size="5"><pre class="prettyprint lang-clj">
+(def add (fn add [a b] (+ a b)))</pre></font>
+
+        <p>The variables of the function are declared inside square brackets. The
+          body of the function <span style="font:monospace;">(+ a b)</span> is just
+          the invocation of Clojure's build in function <i>+</i>. We could achieve
+          a similar effect by:
+        </p>
+
+        <font size="5"><pre class="prettyprint lang-clj">
+(def add +)</pre></font>
+
+        <p>Since a clojure  program consists out of a lot  of top level function
+        definitions there is short cut which  defines a functions and assigns it
+        to the specified identifier with <i>defn</i>:</p>
+
+        <font size="4"><pre class="prettyprint lang-clj linenums">
+(defn add
+  "adds the two arguments a and b and returns the result"
+  [a b]
+  (+ a b))</pre></font>
+
+        <p>In this example we declare a  comment about what the function does in
+        the seconds line,  a so called doc string. Doc  strings can be retrieved
+        via Clojure's  help system  and are also  used within  API documentation
+        generators.</p>
+
+        <h3>Bindings and Destructuring</h3>
+        <p>Bindings allow to bind temporary values to local variable. This helps
+        to deal with large and nested data structures. We illustrate the concept
+        by the following example. Assume  we want to describe the specifications
+        of a compilation process with a Clojure hash-map:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(def my-build-description
+  {:build-machine {:host "localhost" :port 22}
+   :build-name "project-xyz"
+   :build-date (str (java.util.Date.))
+   ;; ...
+   })</pre>
+
+        <p>In  this very  simplified case  the parameters  of the  build process
+        are stored  under the  keys <i>build-machine</i>,  <i>build-name</i> and
+        <i>build-date</i> where  <i>build-machine</i> contains  another hash-map
+        with  the element  <i>host</i> and  <i>port</i>. It  is very  helpful to
+        associate local bindings to these elements e.g. in case they are used in
+        mutliple times in a function. The following example illustrates how this
+        is done using the Clojure form <i>let</i>:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(defn print-build-description
+  "print build-description tags to stdout"
+  [build-description]
+  (let [build-machine (:build-machine build-description)
+        build-name (:build-name build-description)
+        build-date (:build-date build-description)]
+    (println build-machine build-name build-date)))</pre>
+
+        <p>The bindings which are created by  let do have local scope only. They
+        are  also refered  to as  <i>local bindings</i>  for this  reason. Local
+        bindings have precedence  over variable names or bindings  from an upper
+        layer as the following example  illustrates where we invoke the function
+        <i>print-build-descrition</i>:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(let [build-name "ABC"]
+  (print-build-description my-build-description)) -> {:host localhost, :port 22} project-xyz Sun Feb 23 13:16:54 CET 2020</pre>
+
+        <p>The inner binding of the symbol <i>build-name</i> to the contents of
+          hash-map <i>my-build-descriptions</i> overrule the definition of the
+        outer contents "ABC" in the above example.</p>
+
+        <p>In the definition of  the function <i>print-build-description</i> the
+        extraction of hash map's values for  the given keys is still repetetive.
+        Clojure provides  dedicated so called <i>destructuring  mechanism</i> to
+        further simplify that as illustrated in the following example:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(defn print-build-description
+  "print build-description tags to stdout"
+  [build-description]
+  (let [{:keys [build-machine build-name build-date]} build-description]
+    (println build-machine build-name build-date))) </pre>
+
+        <p>This version of <i>print-build-description</i> is synonymous with the
+        first definition but much shorter. In  the context of the declaration of
+        build descriptions <i>descructuring</i> is frequently used.</p>
+
+        <p>The     Bond     framework      provides     an     additional     <a
+        href="https://clojure.org/reference/macros">macro</a>   which  kind   of
+        inverts the destructuring operation. Often it is required to rebuild the
+        originally complex  data structure that  has been provided e.g.  via and
+        input parameter. Instead of repeating key-value pairs to do so the macro
+        <i>hash-args</i> generates a  hash-map where the keys  correspond to the
+        given symbols as illustrated in the following example:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(defn extend-build-description
+  "adds another key-value to a given build-description"
+  [build-description]
+  (let [{:keys [build-machine build-name build-date]} build-description
+        {:keys [host port]} build-machine
+        version "v1.2.3"]
+    (hash-args host port build-name build-date version)))</pre>
+
+        <p>Here  we  destructure the  <i>host</i>  and  <i>port</i> symbols  and
+        return a flat hash map with these values:</p>
+
+        <pre class="prettyprint lang-clj">
+(extend-build-description my-build-description) ->
+
+  {:host localhost, :port 22, :build-name project-xyz,
+   :build-date Sun Feb 23 13:16:54 CET 2020, :version v1.2.3}</pre>
+
+        <p>This basically  wraps all  the concepts up  which are  typically used
+        in  a  so  called  <i>build-description</i>  which  is  the  fundamental
+        building block  of the Bond  nightly release  system. It follows  a very
+        brief  explanation of  fundamental Clojure's  control structures.  For a
+        more  detailed discussion  refer to  further documentation  e.g. the  <a
+        href="https://clojure.org">Clojure Website</a>.</p>
+
+        <h3>Control Structures</h3>
+        <h4>Iterating over Sequences</h4>
+        <p>Clojure  offers  numerous  operations   to  iterate  over  sequences.
+        Two  of  them we  will  shortly  illustrate  in the  following  example.
+        Refer to the <a href="https://clojure.org/reference/sequences">sequences
+        documentation  on clojure.org</a>  for more  detailed information.  Most
+        frequently we want  to apply an operation to each  element of a sequence
+        and store the results in another  sequence. This operation is refered as
+        <i>map</i> within Lisp languages:</p>
+
+        <pre class="prettyprint lang-clj">
+(map
+  (fn [e] (* e e))
+  [0 1 2 3])              ->    (0 1 4 9)</pre>
+
+        <p>Map takes a function and a  sequence as input arguments. The function
+        is applied  to each element  of the sequence  to create the  result. The
+        expression is often found to be formulated more concisely. The following
+        line is synonymous but shorted:</p>
+
+        <pre class="prettyprint lang-clj">
+(map #(* % %) (range 4))  ->    (0 1 4 9)</pre>
+
+        <p>The  second most  important sequence  operation is  <i>reduce</i>. It
+        iterates  over  sequence elements  and  accumaltes  the result.  In  the
+        following example  we use <i>reduce</i> to  sum up the square  values of
+        the previous example:</p>
+        <pre class="prettyprint lang-clj">
+(reduce
+  (fn [res e] (+ res (* e e)))
+  0
+  (range 4))              -> 14</pre>
+
+        <p><i>Map</i>  and <i>reduce</i>  can  be applied  to  all of  Clojure's
+        sequence data  types. When appropriately  used, they allow  to implement
+        many  data processing  functions without  using distinctive  loops in  a
+        condensed and expressive way.</p>
+
+        <h4>Conditionals</h4>
+        <p>The infamous if-then-else statement is  a function in Clojure as well
+        which  returns the  result of  either the  <i>if</i> or  the <i>else</i>
+        clause. It  takes up to  three arguments, the condition  expression, the
+        <i>if</i> clause and optionally the <i>else</i> clause:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(defn multiple-of-two
+  [x]
+  (if (even? x) "yes" "no"))
+
+(multiple-of-two 17)  ->  no</pre>
+
+        <p>The  above  example is  a  little  bit  odd  and would  be  typically
+        formulated as:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(defn multiple-of-two?
+  [x]
+  (even? x))</pre>
+
+        <p>The  function  returns  the  directly boolean  result  value  of  the
+        operation  <i>even?</i> where  questionmark  indicates  that the  boolean
+        getter characteristics of this function.</p>
+
+        <p>There are  cases where  more than one  expression needs  to evaluated
+        within an if clause. This usually happens wit the expressions which have
+        site effects. An is considered  as <i>purely functional</i> when it does
+        not have site  effects. A typical site  effect is I/O as  in depicted in
+        the following example:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(let [logging-enabled true]
+  (reduce
+   (fn [res e]
+     (if logging-enabled
+       (do (println "The next element is: " e)
+           (println "The current result is: " res)
+           (println)))
+     (+ res (* e e)))
+   0
+   (range 4)))</pre>
+
+        <p>This  version  of the  previously  used  <i>recude</i> example  comes
+        with  debug  print operations  which  can  be  enabled and  disabled  by
+        the  enclosing binding  <i>logging-enabled</i>. When  this evaluates  to
+        <i>true</i>, we need  to evaluate more then one expression  to print out
+        all the  results. We use  the form  <i>do</i> to group  these operations
+        together.  The last  expression  in the  form  <i>do</i> determines  its
+        result. Without it Clojure would generate an error because the if clause
+        has then more than three arguments.</p>
+
+        <p>The Clojure macro <i>when</i> works similar to the form <i>if</i> but
+        takes  just one  condition  and  an arbitary  number  of expressions  as
+        arguments  which are  all  evaluated  when the  condition  is true.  The
+        following example corresponds  to the previous one  but uses <i>when</i>
+        instead of <i>if</i>:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(let [logging-enabled true]
+  (reduce
+   (fn [res e]
+     (when logging-enabled
+       (println "The next element is: " e)
+       (println "The current result is: " res)
+       (println))
+     (+ res (* e e)))
+   0
+   (range 4)))</pre>
+
+        <h4>Loops</h4>
+        <p>Like in other Lisp dialects Clojure implements loops recursively as
+        depicted in the following example:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(defn square-sum
+  [res remain]
+  (let [e (first remain)]
+    (if e
+      (recur (+ res (* e e)) (rest remain))
+      res)))</pre>
+
+        <p>Here  we define  a function  <i>square</i> which  recursively invokes
+        itself until there  are no more elements in  the sequence <i>remain</i>.
+        The recurive  invocation is  realized with  the form  <i>recur</i> which
+        must be  the last expression in  the enclosing context. It  has the same
+        effect  as invoking  <i>square</i> but  releases the  otherwise kept  in
+        memory stack. The concept is called <i>tail call optimization</i> and in
+        contrast  to other  Lisps needs  to be  expressed in  Clojure explicitly
+          with  the  <i>recur</i>  form.</p>
+
+        <p>We are going  to illustrate the difference  between recursive looping
+        using tail call optimization and  stack based recursion in the following
+        example.  At first  we  invoke the  previous  implementation which  uses
+        <i>recur</i>:</p>
+
+        <pre class="prettyprint lang-clj">(square-sum 0 (range 10000)) -> 333283335000</pre>
+
+        <p>When we replace <i>recur</i> by the non optimized call to <i>square</i>
+        as illustated here:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(defn square-sum
+  [res remain]
+  (let [e (first remain)]
+    (if e
+      (square (+ res (* e e)) (rest remain))
+      res)))</pre>
+
+        <p>we get the following result:</p>
+
+        <pre class="prettyprint lang-clj">
+(square-sum 0 (range 10000))
+
+    -> Execution error (StackOverflowError)</pre>
+
+        <p>because in  this case the  10.000 invocations of  <i>square</i> consumed
+        the complete stack of the JVM!</p>
+
+        <p>Because   of   the   recursive  characteristics   of   the   function
+        <i>square</i>  we  need  to  always   invoke  it  with  the  exclusively
+        internally  used  result  argument  0  and  with  a  sequence  as  input
+        arguments. The  macro <i>loop</i>  can be  used to  create an  inner and
+        anonymous  version of  the  recursion and  thus allows  to  ommit the  0
+        argument  and to  generate the  squence  internally as  depicted in  the
+        following:</p>
+
+        <pre class="prettyprint lang-clj linenums">
+(defn square-sum
+  [x]
+  (loop [res 0
+         remain (range (inc x))]
+    (let [e (first remain)]
+      (if e
+        (recur (+ res (* e e)) (rest remain))
+        res))))</pre>
+
+        <p>Note  that  the  range  function  does not  include  the  last  value
+        so  (range  3)  generates  the  values   0,  1,  2  only.  We  therefore
+        increase  the input  argument  <i>x</i> by  one to  include  3 into  the
+        square-sum generation. We can now invoke square-sum with a single scalar
+        argument:</p>
+
+    <pre class="prettyprint">(square-sum 3) -> 14</pre>
+
+        <p>Note  that this  function can  be formulated  much more  condensed by
+        <using i>reduce</i>:</p>
+
+    <pre class="prettyprint lang-clj linenums">
+(defn square-sum
+  [x]
+  (reduce
+   (fn [res e] (+ res (* e e)))
+   (range (inc x))))</pre>
+
+         <p>The initial value  for the accumulator has been ommited  in this example.
+         Refer to the
+         <a href="https://clojuredocs.org/clojure.core/reduce">documentation about
+         reduce</a>  for  further   exaplanation.</p>  <p>As  already  indicated
+         looping can  be replaced by  appropriate sequence operations  which are
+         usually more  condensed and expressive.  But cases exist where  the low
+         level recursive implementation might still be more appropriate.</p>
+
+        <h3>What is left out?</h3>
+        <p>Concratulations!  If  you  could  follow  these  examples,  then  you
+        have understood  the most  important aspects  of Clojure  and functional
+        programming in general already. However, there are several aspects which
+        we could not discussed in this minimalist introduction. These are:</p>
+
+        <ul>
+          <li>Dealing with Concurrency</li>
+          <li>Exception Handling</li>
+          <li>Namespaces</li>
+          <li>Lazy Evaluation</li>
+          <li>Macros</li>
+          <li>Working with Java</li>
+          <li>The Clojure Build System</li>
+          <li>Clojurescript to reach the Browser</li>
+        </ul>
+
+        <p>We   hope  that   we   could   rise  your   interest   and  you   are
+        encouraged  to  continue  your  journey   to  get  familiar  with  these
+        as  well.   We  already  gave  hints   where  to  go  next   in  the  <a
+        href="#why_clojure">beginning of this page.</a>Have a good start
+        and a lot of fun with functional programming!</p>
+
+      </div>
+    </div>
+
+    <script src="prettify.js"></script>
+    <script src="lang-clj.js"></script>
+    <script>
+      window.onload = (function(){ prettyPrint(); });
+    </script>
+
+  </body>
+</html>

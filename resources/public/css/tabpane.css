@@ -1,0 +1,115 @@
+/*
+ * Copyright 2008 The Closure Library Authors. All Rights Reserved.
+ *
+ * Use of this source code is governed by the Apache License, Version 2.0.
+ * See the COPYING file for details.
+ */
+
+/* Author: attila@google.com (Attila Bodis) */
+/* Author: eae@google.com (Emil A. Eklund) */
+
+/* taken form demos/tabpane.html */
+
+.goog-tabpane {
+    background: threedface;
+    padding-left: 1px;
+    position: relative;
+}
+
+.goog-tabpane-tabs {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    height: 1ex;
+    position: relative;
+}
+
+.goog-tabpane-left .goog-tabpane-tabs {
+    float: left;
+}
+
+.goog-tabpane-right .goog-tabpane-tabs {
+    float: right;
+}
+
+.goog-tabpane-cont {
+    overflow: visible;
+    /* background: threedface; */
+    background: white;
+    border: 1px solid;
+    border-color: threedhighlight threedshadow threedshadow threedhighlight;
+    padding: 2px;
+    min-height: 400px;
+    height: 64%;
+    -webkit-overflow-scrolling: touch;
+}
+
+.goog-tabpane-tab, .goog-tabpane-tab-selected {
+    display: block;
+    padding: 0px 3ex;
+    background: threedface;
+    border: 1px solid;
+    margin: 0px;
+}
+
+.goog-tabpane-top .goog-tabpane-tab,
+.goog-tabpane-top .goog-tabpane-tab-selected,
+.goog-tabpane-bottom .goog-tabpane-tab,
+.goog-tabpane-bottom .goog-tabpane-tab-selected {
+    float: left;
+}
+
+.goog-tabpane-top .goog-tabpane-tab,
+.goog-tabpane-top .goog-tabpane-tab-selected {
+    border-color: threedhighlight threedshadow threedface threedhighlight;
+}
+
+.goog-tabpane-bottom .goog-tabpane-tab,
+.goog-tabpane-bottom .goog-tabpane-tab-selected {
+    border-color: threedface threedshadow threedshadow threedhighlight;
+}
+
+.goog-tabpane-left .goog-tabpane-tab,
+.goog-tabpane-left .goog-tabpane-tab-selected {
+    border-color: threedhighlight threedface threedshadow threedhighlight;
+}
+
+.goog-tabpane-right .goog-tabpane-tab,
+.goog-tabpane-right .goog-tabpane-tab-selected {
+    border-color: threedhighlight threedshadow threedshadow threedface;
+}
+
+.goog-tabpane-top .goog-tabpane-tab {
+    margin-top: 3px;
+}
+
+.goog-tabpane-tab-selected {
+    font-weight: bold;
+    background: white;
+}
+
+.goog-tabpane-tab-selected,
+.goog-tabpane-tab-selected {
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.goog-tabpane-top .goog-tabpane-tab-selected {
+    position: relative;
+    top: 1px;
+}
+
+.goog-tabpane-bottom .goog-tabpane-tab-selected {
+    position: relative;
+    top: -1px;
+}
+
+.goog-tabpane-left .goog-tabpane-tab-selected {
+    position: relative;
+    left: 1px;
+}
+
+.goog-tabpane-right .goog-tabpane-tab-selected {
+    position: relative;
+    left: -1px;
+}

@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+KEYFILE=$1
+CERTFILE=$2
+
+# first we need to merge the keys into a pkcs12 keystore
+openssl pkcs12 -export -inkey $KEYFILE \
+               -in $CERTFILE -out key_crt.p12 \
+               -name key_crt
+
+keytool -importkeystore -storetype pkcs12 -srckeystore key_crt.p12  \
+         -srcstoretype pkcs12  \
+         -destkeystore key_crt.jks -deststoretype JKS
+

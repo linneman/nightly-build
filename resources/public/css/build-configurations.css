@@ -1,0 +1,23 @@
+#tab-build-config #editMe {
+    width:100%;
+    border: 2px solid #cb4b16;
+    empty-cells:show;
+    background-color:#002b36;
+    color:#839496;
+    /* border-collapse:collapse; */
+    font-family: 'Nanum Gothic Coding', monospace;
+    min-height: 400px;
+    line-height:1.2em;
+    padding:5px;
+}
+
+#save-as-dialog {
+    width:400px;
+    height:150px;
+}
+
+#save-as-dialog table {
+    border-collapse:separate;
+    border-spacing:10px 10px;
+    margin:0.3em;
+}
