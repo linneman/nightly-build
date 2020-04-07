@@ -1018,10 +1018,10 @@ body h3 {
 #build-console {
     margin:auto;
     width:820px;
-    height:650px;
+    height:500px;
     background-color: white;
     border: 1px solid grey;
-    resize: none;
+    resize: both;
     overflow: auto;
 }
 
