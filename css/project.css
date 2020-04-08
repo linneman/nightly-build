@@ -929,15 +929,18 @@ body h3 {
 .sticky {
   position: fixed;
   top: 0;
-  width: 100%;
 }
 
-.sticky + .content {
-  padding-top: 102px;
+.content {
+  display: grid;
+  grid-template-columns: 150px auto;
+  width: 100%;
+  padding-top:20px;
 }
 
 #header-container {
     z-index:1;
+    width: 100%;
 }
 
 #header {
@@ -963,9 +966,9 @@ body h3 {
 }
 
 #menubar {
-    margin-left:161px;
+    margin-left:170px;
     margin-right:auto;
-    width: 84%;
+    width: 81%;
 }
 
 #header-separation {
@@ -973,6 +976,8 @@ body h3 {
 }
 
 #nightly-build-tab-menu {
+    width: 135px;
+    height: 400px;
     margin-left: 20px;
     top: 50px;
     position: sticky;
@@ -981,22 +986,27 @@ body h3 {
 .nightly-tabpane {
     position: relative;
     float:left;
-    margin-top:58px;
+    margin-top:20px;
     margin-left:20px;
-    margin-right:auto;
+    margin-right:20px;
     margin-bottom:auto;
     padding-bottom: 20px;
     background: white;
     padding-left: 45px;
     padding-right: 45px;
-    width: 78%;
+    width: 85%;
     min-height: 400px;
     height: 100%;
 }
 
+#tab-build-config {
+    margin-top:40px;
+}
+
 .nightly-tabpane.doc {
-    margin-top:-24px;
-    margin-left:170px;
+    margin-top:20px;
+    margin-left:20px;
+    margin-left:20px;
 }
 
 #vertical-space-1 {
@@ -1018,10 +1028,10 @@ body h3 {
 #build-console {
     margin:auto;
     width:820px;
-    height:650px;
+    height:500px;
     background-color: white;
     border: 1px solid grey;
-    resize: none;
+    resize: both;
     overflow: auto;
 }
 
