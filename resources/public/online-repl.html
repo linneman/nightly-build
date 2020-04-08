@@ -49,10 +49,13 @@
       <div id="header">
         <div id="header-left">Nightly Build Server</div>
       </div>
-      <div id="header-separation"></div>
+    </div>
 
+    <div id="header-separation"></div>
+
+    <div class="content">
       <div id="nightly-build-tab-menu" class="goog-tab-bar goog-tab-bar-start">
-        <div id="logo"><img src="img/logo.png" width="120" style="margin-top:-15px"></div>
+        <div id="logo"><img src="img/logo.png" width="120"></div>
         <h3>Help Contents</h3>
         <table>
           <tr><td><a href="clojure-intro.html">Introduction</a></td></tr>
@@ -62,257 +65,257 @@
           <tr><td><a href="doc/api/index.html">API Docs</a></td></tr>
         </table>
       </div>
-    </div>
 
-    <div class="content">
-      <div class="nightly-tabpane doc">
-        <h2>Using the Online REPL</h2>
+      <div class="nightly-build-tab-content">
+        <div class="nightly-tabpane doc">
+          <h2>Using the Online REPL</h2>
 
-        <h3>What is a REPL?</h3>
-        <p>The abbreviation
-        <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a>
-        stands for Read–eval–print loop and is basically a shell for programming
-        languages  of  the  Lisp  language group  (Lisp,  Scheme,  Clojure).  It
-        <i>Reads</i> sybmolic  expressions which are entered  within a terminal,
-        <i>Evaluates</i>  them and  finally <i>Prints</i>  the resuslt  within a
-        <i>Loop</i>. From an user's perspective,  these languages can be seen as
-        interpretive programming languages. Technically the compiler (reader) is
-        part of the  Clojure runtime environment so like in  other Lisp dialects
-        there is no runtime penality due to parsing.</p>
+          <h3>What is a REPL?</h3>
+          <p>The abbreviation
+            <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a>
+            stands for Read–eval–print loop and is basically a shell for programming
+            languages  of  the  Lisp  language group  (Lisp,  Scheme,  Clojure).  It
+            <i>Reads</i> sybmolic  expressions which are entered  within a terminal,
+            <i>Evaluates</i>  them and  finally <i>Prints</i>  the resuslt  within a
+            <i>Loop</i>. From an user's perspective,  these languages can be seen as
+            interpretive programming languages. Technically the compiler (reader) is
+            part of the  Clojure runtime environment so like in  other Lisp dialects
+            there is no runtime penality due to parsing.</p>
 
-        <p>The  REPL   is  incredible  powerful   and  the  essential   tool  of
-        all  Lisp  programming  environments.  Many  different  protocols  exist
-        which  differ  essentially in  the  used  terminal interface.  The  most
-        straightforward  approach  is  to  use  the  standard  input  output  of
-        the  local  terminal.  Instead  of  directly  using  standard  I/O  such
-        a  REPL  can  be  connected  to  a TCP  socket  (socket  repl).  A  more
-        advanced  approach  is  to  use a  dedicated  network  protocol  (nREPL)
-        which  allows  the  transmission  of  additional  information  e.g.  for
-        debugging,  information about  currently  enabled  namespaces, etc.  The
-        latter  one  is  mostly  used  by  Integrated  Development  Environments
-        e.g.    <a    href="https://www.eclipse.org/">Eclipse</a>    with    the
-        <a href="http://doc.ccw-ide.org/documentation.html">Counterclockwise</a>
-        plugin,   <a  href="https://www.jetbrains.com/idea/">IntelliJ</a>   with
-        the   <a    href="https://cursive-ide.com/">Cursive</a>   extension   or
-        <a    href="https://www.gnu.org/software/emacs/">Emacs</a>    with    <a
-        href="https://cider.mx/">Cider</a>.  Programming  environments based  on
-        <a  href="https://nrepl.org/nrepl/0.6.0/index.html">nREPL</a>   are  the
-        recommended approach when it comes to serious Clojure programming.</p>
+          <p>The  REPL   is  incredible  powerful   and  the  essential   tool  of
+            all  Lisp  programming  environments.  Many  different  protocols  exist
+            which  differ  essentially in  the  used  terminal interface.  The  most
+            straightforward  approach  is  to  use  the  standard  input  output  of
+            the  local  terminal.  Instead  of  directly  using  standard  I/O  such
+            a  REPL  can  be  connected  to  a TCP  socket  (socket  repl).  A  more
+            advanced  approach  is  to  use a  dedicated  network  protocol  (nREPL)
+            which  allows  the  transmission  of  additional  information  e.g.  for
+            debugging,  information about  currently  enabled  namespaces, etc.  The
+            latter  one  is  mostly  used  by  Integrated  Development  Environments
+            e.g.    <a    href="https://www.eclipse.org/">Eclipse</a>    with    the
+            <a href="http://doc.ccw-ide.org/documentation.html">Counterclockwise</a>
+            plugin,   <a  href="https://www.jetbrains.com/idea/">IntelliJ</a>   with
+            the   <a    href="https://cursive-ide.com/">Cursive</a>   extension   or
+            <a    href="https://www.gnu.org/software/emacs/">Emacs</a>    with    <a
+                                                                                    href="https://cider.mx/">Cider</a>.  Programming  environments based  on
+            <a  href="https://nrepl.org/nrepl/0.6.0/index.html">nREPL</a>   are  the
+            recommended approach when it comes to serious Clojure programming.</p>
 
-        <p>However,  we understand  that all  of  these tools  are complex.  The
-        installation and  becoming familiar with them  means usually significant
-        effort.  To make  the  start  easier we  provide  an online  programming
-        environment which does not require any special tools except a modern web
-        browser.</p>
+          <p>However,  we understand  that all  of  these tools  are complex.  The
+            installation and  becoming familiar with them  means usually significant
+            effort.  To make  the  start  easier we  provide  an online  programming
+            environment which does not require any special tools except a modern web
+            browser.</p>
 
-        <h3>How the Online REPL Works</h3>
-        <p>Bond comes with an integrated Clojure editor which supports
-        <a href="https://github.com/clojure-emacs/clojure-mode">syntax higlighting</a>,
-        <a href="https://github.com/Fanael/rainbow-delimiters">rainbow delimiters</a>
-        and
-        <a href="http://danmidwood.com/content/2014/11/21/animated-paredit.html">
-        paredit</a>.  These editor  plugins are  typically used  by Lisp/Clojure
-        programmers.  Please note  that the  Online  REPL does  not support  the
-        complete  featureset  of  these  plugins. Furthermore,  the  longer  the
-        program text to  be edited becomes, the slower the  editor reacts due to
-        the  restricted  performance  of  Javascript engines.  It  is  therefore
-        recommended to use an dedicated IDE editor such as
-        <a href="http://doc.ccw-ide.org/documentation.html">Counterclockwise</a>,
-        <a href="https://cursive-ide.com/">Cursive</a>  or
-        <a href="https://www.gnu.org/software/emacs/">Emacs</a> together with an
-        external REPL for  more serious projects. This approach  is discussed in
-        the next  section. The Online  Editor is more  or less restricted  to be
-        practicallly used for small changes and the first steps only.</p>
+          <h3>How the Online REPL Works</h3>
+          <p>Bond comes with an integrated Clojure editor which supports
+            <a href="https://github.com/clojure-emacs/clojure-mode">syntax higlighting</a>,
+            <a href="https://github.com/Fanael/rainbow-delimiters">rainbow delimiters</a>
+            and
+            <a href="http://danmidwood.com/content/2014/11/21/animated-paredit.html">
+              paredit</a>.  These editor  plugins are  typically used  by Lisp/Clojure
+            programmers.  Please note  that the  Online  REPL does  not support  the
+            complete  featureset  of  these  plugins. Furthermore,  the  longer  the
+            program text to  be edited becomes, the slower the  editor reacts due to
+            the  restricted  performance  of  Javascript engines.  It  is  therefore
+            recommended to use an dedicated IDE editor such as
+            <a href="http://doc.ccw-ide.org/documentation.html">Counterclockwise</a>,
+            <a href="https://cursive-ide.com/">Cursive</a>  or
+            <a href="https://www.gnu.org/software/emacs/">Emacs</a> together with an
+            external REPL for  more serious projects. This approach  is discussed in
+            the next  section. The Online  Editor is more  or less restricted  to be
+            practicallly used for small changes and the first steps only.</p>
 
-        <p>The editor panel  within the configurations tab in  browser is always
-        linked  to  the  workspace  <i>server.config</i> on  the  build  control
-        server.  Whenever an  S-expression  is evaluated  by  clicking the  menu
-        <i>Evaluate S-Expression  before point</i> or simply  pressing Command-E
-        (or CRTL-E  on the Mac),  the S-Expression,  that is the  preceding list
-        encapsulated by parenthesis, is sent  to the server and evaluated there.
-        The server sends  the result of the evaluation or  an error message back
-        to  browser afterwords  where  it  is displayed  within  a popup  dialog
-        window. The approach is illustrated below in figure 1.</p>
+          <p>The editor panel  within the configurations tab in  browser is always
+            linked  to  the  workspace  <i>server.config</i> on  the  build  control
+            server.  Whenever an  S-expression  is evaluated  by  clicking the  menu
+            <i>Evaluate S-Expression  before point</i> or simply  pressing Command-E
+            (or CRTL-E  on the Mac),  the S-Expression,  that is the  preceding list
+            encapsulated by parenthesis, is sent  to the server and evaluated there.
+            The server sends  the result of the evaluation or  an error message back
+            to  browser afterwords  where  it  is displayed  within  a popup  dialog
+            window. The approach is illustrated below in figure 1.</p>
 
-        <table class="doc-image">
-          <caption align="bottom">Fig 1: Illustration of the Evaluation of S-Expressions</caption>
-          <tr><td><img src="img/online-repl-workflow.png"></td></tr>
-        </table>
+          <table class="doc-image">
+            <caption align="bottom">Fig 1: Illustration of the Evaluation of S-Expressions</caption>
+            <tr><td><img src="img/online-repl-workflow.png"></td></tr>
+          </table>
 
-        <p>Note  that the  build  server  which is  executing  the Bond  Nightly
-        Release Control Server and illustrated in figure 1 does not necessary do
-        the actual  build. Since all  build operations  are controlled via  a <a
-        href="https://en.wikipedia.org/wiki/Secure_Shell">ssh</a>,  we  have  at
-        least  the  following computation  environments  involved  in an  actual
-        build:</p>
+          <p>Note  that the  build  server  which is  executing  the Bond  Nightly
+            Release Control Server and illustrated in figure 1 does not necessary do
+            the actual  build. Since all  build operations  are controlled via  a <a
+                                                                                    href="https://en.wikipedia.org/wiki/Secure_Shell">ssh</a>,  we  have  at
+            least  the  following computation  environments  involved  in an  actual
+            build:</p>
 
-        <dl>
-          <dt>Build Machine or Container</dt>
-          <dd>The system where the source is actually compiled.</dd>
+          <dl>
+            <dt>Build Machine or Container</dt>
+            <dd>The system where the source is actually compiled.</dd>
 
-          <dt>The Bond Build Control Server</dt>
-          <dd>System which runs the backend of the build control software.</dd>
+            <dt>The Bond Build Control Server</dt>
+            <dd>System which runs the backend of the build control software.</dd>
 
-          <dt>The Web browser and/or N-Repl Client</dt>
-          <dd>System which is used to remote control Bond.</dd>
+            <dt>The Web browser and/or N-Repl Client</dt>
+            <dd>System which is used to remote control Bond.</dd>
 
-          <dt>Source Code Managemengt Server</dt>
-          <dd>These days mostly a public or  private git server such e.g. Github
-          or Gitlab.</dd>
-        </dl>
+            <dt>Source Code Managemengt Server</dt>
+            <dd>These days mostly a public or  private git server such e.g. Github
+              or Gitlab.</dd>
+          </dl>
 
-        <p>All of these systems can be executed on different hosts.</p>
+          <p>All of these systems can be executed on different hosts.</p>
 
-        <h3>What are Build Configurations?</h3>
+          <h3>What are Build Configurations?</h3>
 
-        <p>A sequence of shell commands  also known as <i>build sequence</i> and
-        an  associated  set  of  parameters  constitute  a  so  called  <i>build
-        description</i>.  Both  are embedded  into  Clojure  code. The  <i>build
-        sequence</i>  can be  reused  with  another parameter  set  in order  to
-        declare  different  build  flavors  which  could  be  required  e.g.  to
-        generate  builds  for  development  purposes,  special  target  hardware
-        configurations and  so on. Multiple <i>build  descriptions</i> which are
-        explained  in  more  detail  within  the  next  section  can  be  stored
-        within a  single file under the  Clojure namespace <i>server.config</i>.
-        Such  a file  is typically  referred to  as <i>build  configuration</i>.
-        Only  one <i>build  configuration</i> can  be  active at  a given  time.
-        By  convention all  <i>build  configurations</i> are  stored within  the
-        directory <i>build-descriptions</i> under the home directory of the user
-        which has started  the bond server. When bond is  started the first time
-        and this directory does not exist,  it is automatically created and some
-        sample files are copied to it.</p>
+          <p>A sequence of shell commands  also known as <i>build sequence</i> and
+            an  associated  set  of  parameters  constitute  a  so  called  <i>build
+              description</i>.  Both  are embedded  into  Clojure  code. The  <i>build
+              sequence</i>  can be  reused  with  another parameter  set  in order  to
+            declare  different  build  flavors  which  could  be  required  e.g.  to
+            generate  builds  for  development  purposes,  special  target  hardware
+            configurations and  so on. Multiple <i>build  descriptions</i> which are
+            explained  in  more  detail  within  the  next  section  can  be  stored
+            within a  single file under the  Clojure namespace <i>server.config</i>.
+            Such  a file  is typically  referred to  as <i>build  configuration</i>.
+            Only  one <i>build  configuration</i> can  be  active at  a given  time.
+            By  convention all  <i>build  configurations</i> are  stored within  the
+            directory <i>build-descriptions</i> under the home directory of the user
+            which has started  the bond server. When bond is  started the first time
+            and this directory does not exist,  it is automatically created and some
+            sample files are copied to it.</p>
 
-        <p>The file menu offeres several functions  to load, save and activate a
-        configuration from the server's <i>build-description</i> directory. Note
-        that a  <i>build configuration</i>  is not automatically  activated when
-        loaded by  selecting another  configuration from  the list  of available
-        configurations which is  shown after clicking File->load.  Instead it is
-        exclusively  loaded  to the  browsers  configuration  editor pane.  This
-        allows to inspect a different build configuration without triggering any
-        change  on the  server.  When the  web  page is  reloaded  or simply  by
-        clicking File->revert the currently activated configuration is loaded to
-        the editor pane.  The same behavior applies when  File->new is selected.
-        Only when  <i>Activate Current Configuration</i> is  triggered from menu
-        File, the currently displayed build  configuration file is loaded to the
-        server. Note, that when the content of the active configuration has been
-        changed within the online editor, this change must transferred to server
-        first by  selecting the menu entry  <i>Save</i> from the pull  down menu
-        <i>File</i>.  Otherwise the  content which  is stored  on the  server is
-        used. Use  the menu  <i>Save as  ...</i> to  create a  new configuration
-        by  saving  the  contents  of  the  configuration  editor  pane  to  the
-        specified  file  name.  Note  that  variable  definitions  in  namespace
-        <i>server.config</i>  remain valid  unless they  are overwritten  or the
-        server is restarted.</p>
+          <p>The file menu offeres several functions  to load, save and activate a
+            configuration from the server's <i>build-description</i> directory. Note
+            that a  <i>build configuration</i>  is not automatically  activated when
+            loaded by  selecting another  configuration from  the list  of available
+            configurations which is  shown after clicking File->load.  Instead it is
+            exclusively  loaded  to the  browsers  configuration  editor pane.  This
+            allows to inspect a different build configuration without triggering any
+            change  on the  server.  When the  web  page is  reloaded  or simply  by
+            clicking File->revert the currently activated configuration is loaded to
+            the editor pane.  The same behavior applies when  File->new is selected.
+            Only when  <i>Activate Current Configuration</i> is  triggered from menu
+            File, the currently displayed build  configuration file is loaded to the
+            server. Note, that when the content of the active configuration has been
+            changed within the online editor, this change must transferred to server
+            first by  selecting the menu entry  <i>Save</i> from the pull  down menu
+            <i>File</i>.  Otherwise the  content which  is stored  on the  server is
+            used. Use  the menu  <i>Save as  ...</i> to  create a  new configuration
+            by  saving  the  contents  of  the  configuration  editor  pane  to  the
+            specified  file  name.  Note  that  variable  definitions  in  namespace
+            <i>server.config</i>  remain valid  unless they  are overwritten  or the
+            server is restarted.</p>
 
-        <h3>Editing Clojure Code</h3>
+          <h3>Editing Clojure Code</h3>
 
-        <p>On contrast of the more widespread programming languages of the Algol
-        respectively C language group, Clojure  code comes with more parenthesis
-        because code and  data is epxressed with the same  syntax list notation.
-        With larger functions  this can create some  difficulties especially for
-        newcomers to  the Lisp respectily  Clojure. Typical Lisp editors  try to
-        overcome this by providing dedicated editor modes such as
-        <a href="https://github.com/Fanael/rainbow-delimiters">rainbow delimiters</a> and
-        <a href="http://danmidwood.com/content/2014/11/21/animated-paredit.html">paredit</a>.
-        These make it easier to deal with consequtive paranthesis by associating
-        each  parenthesis   pair  a   different  color.  Furthermore   when  the
-        open-parenthesis-character '(' is entered, the editor will automatically
-        create a matching close-paenthesis-character  ')'. The same rule applies
-        for squared and curly brackets.</p>
+          <p>On contrast of the more widespread programming languages of the Algol
+            respectively C language group, Clojure  code comes with more parenthesis
+            because code and  data is epxressed with the same  syntax list notation.
+            With larger functions  this can create some  difficulties especially for
+            newcomers to  the Lisp respectily  Clojure. Typical Lisp editors  try to
+            overcome this by providing dedicated editor modes such as
+            <a href="https://github.com/Fanael/rainbow-delimiters">rainbow delimiters</a> and
+            <a href="http://danmidwood.com/content/2014/11/21/animated-paredit.html">paredit</a>.
+            These make it easier to deal with consequtive paranthesis by associating
+            each  parenthesis   pair  a   different  color.  Furthermore   when  the
+            open-parenthesis-character '(' is entered, the editor will automatically
+            create a matching close-paenthesis-character  ')'. The same rule applies
+            for squared and curly brackets.</p>
 
-        <p>Bond integrates both modes to certain degree as well.In the beginning
-        it may take some  getting used to but the benifit of  not having to deal
-        with  missing or  wrongly  associated paranthesis  mostly  pays off.  To
-        try  out  clear the  editor  pane  and  enter  try enter  the  following
-        expression:</p>
+          <p>Bond integrates both modes to certain degree as well.In the beginning
+            it may take some  getting used to but the benifit of  not having to deal
+            with  missing or  wrongly  associated paranthesis  mostly  pays off.  To
+            try  out  clear the  editor  pane  and  enter  try enter  the  following
+            expression:</p>
 
-        <font size="5"><pre class="prettyprint lang-clj">(list 1 2 3)</pre></font>
+          <font size="5"><pre class="prettyprint lang-clj">(list 1 2 3)</pre></font>
 
-        <p>As  soon as  you hit  the '('  key, the  associated ')'  character is
-        automatically typed and  the cursor is placed between them.  You can now
-        continue  typing  the  word  'list'  followed by  blank  and  the  digit
-        characters.</p>
+          <p>As  soon as  you hit  the '('  key, the  associated ')'  character is
+            automatically typed and  the cursor is placed between them.  You can now
+            continue  typing  the  word  'list'  followed by  blank  and  the  digit
+            characters.</p>
 
-        <p>Now assume that we want to put the first digits into a vector and use
-        it as first element in the given list so that we get the S-expression:</p>:
+          <p>Now assume that we want to put the first digits into a vector and use
+            it as first element in the given list so that we get the S-expression:</p>:
 
-        <font size="5"><pre class="prettyprint lang-clj">(list [1 2 3])</pre></font>
+          <font size="5"><pre class="prettyprint lang-clj">(list [1 2 3])</pre></font>
 
-        <p>In order to alter the  already exterend list S-expression accoringly,
-        place  the cursor  before  the  character '1'  and  enter the  character
-        '['. This will create a pair of squared brackets:</p>
+          <p>In order to alter the  already exterend list S-expression accoringly,
+            place  the cursor  before  the  character '1'  and  enter the  character
+            '['. This will create a pair of squared brackets:</p>
 
-        <font size="5"><pre class="prettyprint lang-clj">(list []1 2 3)</pre></font>
+          <font size="5"><pre class="prettyprint lang-clj">(list []1 2 3)</pre></font>
 
-        <p>You can  now shift the  closing squared  bracket to include  the next
-        element by  selecting the function <i>Forward  Slurp S-Expression</i> or
-        just  pressing <i>C-)</i>  where <i>C</i>  denotes the  control key  and
-        <i>')'</i>  corresponds to  the  key combination  to  enter the  closing
-        paranthesis character.  On an  English keyboard  this corrsponds  to the
-        keys  <i>shift-0</i>.  Note  that  the  command  key  depends  on  which
-        Operating System is  used to run you webbrowser. On  Windows it might be
-        the  ALT key  while on  Macintosh  and some  Linux distros  it might  be
-        associated with  the control  key. These  differences exist  because the
-        main modifier  key is already bound  to browser functions so  we have to
-        use the alternative  modifier key and operating systems  differ in terms
-        of the key  layout used for main and alternative  control modifier keys.
-        Whenever  <i>Forward Slurp  S-Expression</i> is  triggered, the  closing
-        rectangular bracket is forwarded one element to the right as illustrated
-        in the following:</p>
+          <p>You can  now shift the  closing squared  bracket to include  the next
+            element by  selecting the function <i>Forward  Slurp S-Expression</i> or
+            just  pressing <i>C-)</i>  where <i>C</i>  denotes the  control key  and
+            <i>')'</i>  corresponds to  the  key combination  to  enter the  closing
+            paranthesis character.  On an  English keyboard  this corrsponds  to the
+            keys  <i>shift-0</i>.  Note  that  the  command  key  depends  on  which
+            Operating System is  used to run you webbrowser. On  Windows it might be
+            the  ALT key  while on  Macintosh  and some  Linux distros  it might  be
+            associated with  the control  key. These  differences exist  because the
+            main modifier  key is already bound  to browser functions so  we have to
+            use the alternative  modifier key and operating systems  differ in terms
+            of the key  layout used for main and alternative  control modifier keys.
+            Whenever  <i>Forward Slurp  S-Expression</i> is  triggered, the  closing
+            rectangular bracket is forwarded one element to the right as illustrated
+            in the following:</p>
 
-        <font size="5"><pre class="prettyprint lang-clj">
-(list [1] 2 3)
-(list [1 2] 3)
-(list [1 2 3])
-        </pre></font>
+          <font size="5"><pre class="prettyprint lang-clj">
+              (list [1] 2 3)
+              (list [1 2] 3)
+              (list [1 2 3])
+          </pre></font>
 
-        <p>In order  to reverse the  last operation  of and remove  the elements
-        from the  vector just place the  cursor at a location  inside the vector
-        and  select  <i>Split S-Expr</i>  from  the  pulldown menu  <i>Edit.</i>
-        Alternatively you can enter the key combination <i>C-s</i>.</p>
+          <p>In order  to reverse the  last operation  of and remove  the elements
+            from the  vector just place the  cursor at a location  inside the vector
+            and  select  <i>Split S-Expr</i>  from  the  pulldown menu  <i>Edit.</i>
+            Alternatively you can enter the key combination <i>C-s</i>.</p>
 
-        <p>Excerise  these  functions a  little  bit.  We  hope  to be  able  to
-        illustrate  the benefits  of these  editor modules  and convince  you to
-        install these to your favorite  IDE/Editor as well. These should greatly
-        simplify the editing of Lisp/Clojure code.</p>
+          <p>Excerise  these  functions a  little  bit.  We  hope  to be  able  to
+            illustrate  the benefits  of these  editor modules  and convince  you to
+            install these to your favorite  IDE/Editor as well. These should greatly
+            simplify the editing of Lisp/Clojure code.</p>
 
-        <h3>The Clipboard</h3>
+          <h3>The Clipboard</h3>
 
-        <p>The clipboard in bond works diffently than in other editors. In order
-        to avoid  that parenthesis and  bracket levels get unballanced,  we have
-        restricted the clipboard operationg to  operate just on one S-expression
-        exclusively. We believe  that for the given purpose  this restriction is
-        acceptable because a one build configuration is usually consisted out of
-        two S-expressions only. When it  comes to more serious development tasks
-        it is recommended that you use  your favorite IDE or editing environemnt
-        anyway. Refer to the the section
-          <a href="connecting-an-external-repl.html">Connecting an External REPL</a>
-        for more detailed information how to do this.</p>
+          <p>The clipboard in bond works diffently than in other editors. In order
+            to avoid  that parenthesis and  bracket levels get unballanced,  we have
+            restricted the clipboard operationg to  operate just on one S-expression
+            exclusively. We believe  that for the given purpose  this restriction is
+            acceptable because a one build configuration is usually consisted out of
+            two S-expressions only. When it  comes to more serious development tasks
+            it is recommended that you use  your favorite IDE or editing environemnt
+            anyway. Refer to the the section
+            <a href="connecting-an-external-repl.html">Connecting an External REPL</a>
+            for more detailed information how to do this.</p>
 
-        <h3>Online Evaluation of Clojure Code</h3>
+          <h3>Online Evaluation of Clojure Code</h3>
 
-        <p>Bond  comes with  allows to  evaluate Clojure  S-expressions directly
-        from  the configuration  editor  pane.  In order  to  evaluate a  single
-        S-expression place  the cursor to  the right of the  closing parenthesis
-        and  select  the  menu  <i>Evaluate S-Expr  before  point</i>  from  the
-        pulldown  menu  <i>Evaluate</i>.  In  example when  with  the  following
-        S-expression:</p>
+          <p>Bond  comes with  allows to  evaluate Clojure  S-expressions directly
+            from  the configuration  editor  pane.  In order  to  evaluate a  single
+            S-expression place  the cursor to  the right of the  closing parenthesis
+            and  select  the  menu  <i>Evaluate S-Expr  before  point</i>  from  the
+            pulldown  menu  <i>Evaluate</i>.  In  example when  with  the  following
+            S-expression:</p>
 
-        <font size="5"><pre class="prettyprint lang-clj">(reduce + (range 10))</pre></font>
+          <font size="5"><pre class="prettyprint lang-clj">(reduce + (range 10))</pre></font>
 
-        <p>the evalution result <i>45</i> is displayed in a popup dialog window.
-        Note that  a single  S-Expressions is always  evaluated within  the name
-        space <i>server.config</i> which is used  by bond for the declaration of
-        <i>build descriptions</i>.</p>
+          <p>the evalution result <i>45</i> is displayed in a popup dialog window.
+            Note that  a single  S-Expressions is always  evaluated within  the name
+            space <i>server.config</i> which is used  by bond for the declaration of
+            <i>build descriptions</i>.</p>
 
-        <p>The  menu  function  <i>Evaluate   All  Expression</i>  evalates  the
-        complete  content  of  the  build configuration  editor  pane  which  is
-        typically  associated with  a <i>build  configuration file</i>.  Because
-        these files shall always declare  the name space <i>server.config</i> in
-        the  header,  there is  no  further  name space  selection  respectively
-        restriction. So it is possible but  not recommended to inject conde into
-        another name space.</p>
+          <p>The  menu  function  <i>Evaluate   All  Expression</i>  evalates  the
+            complete  content  of  the  build configuration  editor  pane  which  is
+            typically  associated with  a <i>build  configuration file</i>.  Because
+            these files shall always declare  the name space <i>server.config</i> in
+            the  header,  there is  no  further  name space  selection  respectively
+            restriction. So it is possible but  not recommended to inject conde into
+            another name space.</p>
 
+        </div>
       </div>
     </div>
 

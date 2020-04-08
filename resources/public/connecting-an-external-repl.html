@@ -49,10 +49,13 @@
       <div id="header">
         <div id="header-left">Nightly Build Server</div>
       </div>
-      <div id="header-separation"></div>
+    </div>
 
+    <div id="header-separation"></div>
+
+    <div class="content">
       <div id="nightly-build-tab-menu" class="goog-tab-bar goog-tab-bar-start">
-        <div id="logo"><img src="img/logo.png" width="120" style="margin-top:-15px"></div>
+        <div id="logo"><img src="img/logo.png" width="120"></div>
         <h3>Help Contents</h3>
         <table>
           <tr><td><a href="clojure-intro.html">Introduction</a></td></tr>
@@ -62,182 +65,182 @@
           <tr><td><a href="doc/api/index.html">API Docs</a></td></tr>
         </table>
       </div>
-    </div>
 
-    <div class="content">
-      <div class="nightly-tabpane doc">
-        <h2>Connecting an external REPL</h2>
+      <div class="nightly-build-tab-content">
+        <div class="nightly-tabpane doc">
+          <h2>Connecting an external REPL</h2>
 
-        <p>As we explained in detail in the Online REPL section, the cornerstone
-        of  program development  in the  Clojure programming  language and  most
-        Lisp  dialects is  the so-called  REPL. In  addition, there  are further
-        supporting  functions  such  as  syntax  highlighting,  special  editing
-        functions such as paredit, functions for debugging, code navigation, and
-        fast retrieval  of documentation. All these  functionalities are usually
-        combined in an integrated development environment, whose capabilities go
-        far  beyond the  inline  editor and  online REPL  provided  by the  bond
-        server.  In addition,  these  systems  allow to  extend  the server  and
-        client implementation  of the  Bond System  itself. For  the development
-        of  more  complex  build  descriptions,  the  use  of  such  an  IDE  is
-        therefore  imperative. In  the  following we  introduce  the three  most
-        important of these development environments.  They all use the so-called
-        <a href="https://nrepl.org/nrepl/0.6.0/index.html">nREPL protocol</a> as
-        interface to the Clojure runtime system.</p>
+          <p>As we explained in detail in the Online REPL section, the cornerstone
+            of  program development  in the  Clojure programming  language and  most
+            Lisp  dialects is  the so-called  REPL. In  addition, there  are further
+            supporting  functions  such  as  syntax  highlighting,  special  editing
+            functions such as paredit, functions for debugging, code navigation, and
+            fast retrieval  of documentation. All these  functionalities are usually
+            combined in an integrated development environment, whose capabilities go
+            far  beyond the  inline  editor and  online REPL  provided  by the  bond
+            server.  In addition,  these  systems  allow to  extend  the server  and
+            client implementation  of the  Bond System  itself. For  the development
+            of  more  complex  build  descriptions,  the  use  of  such  an  IDE  is
+            therefore  imperative. In  the  following we  introduce  the three  most
+            important of these development environments.  They all use the so-called
+            <a href="https://nrepl.org/nrepl/0.6.0/index.html">nREPL protocol</a> as
+            interface to the Clojure runtime system.</p>
 
-        <h3>Emacs</h3>
-        <p>The   <a  href="https://www.gnu.org/software/emacs/">Emacs</a>   text
-        editor is by far the oldest  and most widely used programming system for
-        application  development in  the  programming language  Lisp. Emacs  was
-        developed more  than 30 years ago  and was mostly implemented  in a Lisp
-        dialect  itself,  which  explains  its wide  distribution  in  the  Lisp
-        community. Also the  first development tools for  Clojure were initially
-        implemented for Emacs.  For these reasons Emacs offers  the best support
-        for software development projects in Clojure.</p>
+          <h3>Emacs</h3>
+          <p>The   <a  href="https://www.gnu.org/software/emacs/">Emacs</a>   text
+            editor is by far the oldest  and most widely used programming system for
+            application  development in  the  programming language  Lisp. Emacs  was
+            developed more  than 30 years ago  and was mostly implemented  in a Lisp
+            dialect  itself,  which  explains  its wide  distribution  in  the  Lisp
+            community. Also the  first development tools for  Clojure were initially
+            implemented for Emacs.  For these reasons Emacs offers  the best support
+            for software development projects in Clojure.</p>
 
-        <p>Another major  advantage is that  Emacs is the only  system mentioned
-        here that does not require a graphical user interface and can be used in
-        plain text mode. If network bandwidth  or resources are limited this can
-        be  very  advantageous as  Emacs  can  be  run  directly on  any  remote
-        system.</p>
+          <p>Another major  advantage is that  Emacs is the only  system mentioned
+            here that does not require a graphical user interface and can be used in
+            plain text mode. If network bandwidth  or resources are limited this can
+            be  very  advantageous as  Emacs  can  be  run  directly on  any  remote
+            system.</p>
 
-        <p>But Emacs also  has significant disadvantages. Since  the software is
-        much  older than  all  modern graphical  user  interfaces, its  standard
-        operating  concepts  are  not  supported   throughout  or  not  at  all.
-        Users  therefore  have  to  relearn  most  of  the  basic  functions  of
-        the  editor.  Most  of  the  Emacs  functions  are  also  controlled  by
-        special  key   combinations  which  neither  correspond   to  the  usual
-        key  combinations  of  today's   graphical  operating  systems  nor  are
-        favourable  from  an  ergonomic  point   of  view.  The  latter  is  due
-        to  the  fact   that  in  the  early  stages  of   Emacs  development  a
-        <a   href="https://en.wikipedia.org/wiki/Space-cadet_keyboard">different
-        keyboard layout</a>  was used  which has long  been forgotten.  In fact,
-        Emacs is considered largely
-        <a href="https://stackoverflow.com/questions/9257677/emacs-annoying-key-combinations">
-        unusable with its default configuration</a>!</p>
+          <p>But Emacs also  has significant disadvantages. Since  the software is
+            much  older than  all  modern graphical  user  interfaces, its  standard
+            operating  concepts  are  not  supported   throughout  or  not  at  all.
+            Users  therefore  have  to  relearn  most  of  the  basic  functions  of
+            the  editor.  Most  of  the  Emacs  functions  are  also  controlled  by
+            special  key   combinations  which  neither  correspond   to  the  usual
+            key  combinations  of  today's   graphical  operating  systems  nor  are
+            favourable  from  an  ergonomic  point   of  view.  The  latter  is  due
+            to  the  fact   that  in  the  early  stages  of   Emacs  development  a
+            <a   href="https://en.wikipedia.org/wiki/Space-cadet_keyboard">different
+              keyboard layout</a>  was used  which has long  been forgotten.  In fact,
+            Emacs is considered largely
+            <a href="https://stackoverflow.com/questions/9257677/emacs-annoying-key-combinations">
+              unusable with its default configuration</a>!</p>
 
-        <p>You should be aware of these problems when choosing Emacs. Of all the
-        IDE's discussed here,  Emacs is the most  flexibility and extensibility.
-        There  is  hardly a  feature  that  cannot  be reconfigured.  There  are
-        also  a  lot  of  extensions  available  which  especially  improve  the
-        problem of complicated keyboard shortcuts.  Users familiar with the text
-        editor  <a  href="https://www.vim.org">Vi</a>  are  recommended  to  use
-        the  <a  href="https://evil.readthedocs.io/en/latest/overview.html">evil
-        extension</a>   which   makes  most   of   the   shortcuts  used   under
-        Vi   available   in   Emacs   as   well.   The   Emacs   derivative   <a
-        href="https://www.spacemacs.org/">spacemacs</a>  has  the plugin  'evil'
-        preinstalled. So  the learning curve  should be  steep, at least  for vi
-        users.</p>
+          <p>You should be aware of these problems when choosing Emacs. Of all the
+            IDE's discussed here,  Emacs is the most  flexibility and extensibility.
+            There  is  hardly a  feature  that  cannot  be reconfigured.  There  are
+            also  a  lot  of  extensions  available  which  especially  improve  the
+            problem of complicated keyboard shortcuts.  Users familiar with the text
+            editor  <a  href="https://www.vim.org">Vi</a>  are  recommended  to  use
+            the  <a  href="https://evil.readthedocs.io/en/latest/overview.html">evil
+              extension</a>   which   makes  most   of   the   shortcuts  used   under
+            Vi   available   in   Emacs   as   well.   The   Emacs   derivative   <a
+                                                                                    href="https://www.spacemacs.org/">spacemacs</a>  has  the plugin  'evil'
+            preinstalled. So  the learning curve  should be  steep, at least  for vi
+            users.</p>
 
-        <p>When    you    decide    for    Emacs,   you    should    at    least
-        install   the  plugins   <a  href="https://cider.mx">Cider</a>   and  <a
-        href="https://github.com/clojure-emacs/clojure-mode">Clojure    Mode</a>
-        since   these   are   essential   for   all   Clojure   development   in
-        Emacs.   Refer    also   to    the   excellent   instructions    of   <a
-        href="https://www.braveclojure.com/basic-emacs">Clojure  for  the  Brave
-        and True</a> about how to use Emacs for Clojure development.</p>
+          <p>When    you    decide    for    Emacs,   you    should    at    least
+            install   the  plugins   <a  href="https://cider.mx">Cider</a>   and  <a
+                                                                                    href="https://github.com/clojure-emacs/clojure-mode">Clojure    Mode</a>
+            since   these   are   essential   for   all   Clojure   development   in
+            Emacs.   Refer    also   to    the   excellent   instructions    of   <a
+                                                                                    href="https://www.braveclojure.com/basic-emacs">Clojure  for  the  Brave
+              and True</a> about how to use Emacs for Clojure development.</p>
 
-        <p>As one of the first projects of the free software movement, Emacs and
-        all  plugins  are  available  for  free  under  the  free  GPL  software
-        license.</p>
+          <p>As one of the first projects of the free software movement, Emacs and
+            all  plugins  are  available  for  free  under  the  free  GPL  software
+            license.</p>
 
-        <table class="doc-image">
-          <caption align="bottom">Fig 1: Clojure Development under Emacs</caption>
-          <tr><td><img src="img/emacs_ide.png"></td></tr>
-        </table>
+          <table class="doc-image">
+            <caption align="bottom">Fig 1: Clojure Development under Emacs</caption>
+            <tr><td><img src="img/emacs_ide.png"></td></tr>
+          </table>
 
-        <p>Bond automatically starts  a nREPL server on local TCP  port 7888. To
-        connect Emacs  to a running  Bond instance, press M-x  cider-connect and
-        specify  'localhost' under  Host  and '7888'  under  Port. For  security
-        reasons  nREPL  session can  only  be  opened  locally. However,  it  is
-        possible to  access the nREPL port  via ssh port forwarding  even from a
-        remote  machine.  The  port to  be  used  can  be  changed in  the  file
-        <i>~/.nightly-build/local-settings.clj</i>, which  is created  the first
-        time the bond server is started.</p>
+          <p>Bond automatically starts  a nREPL server on local TCP  port 7888. To
+            connect Emacs  to a running  Bond instance, press M-x  cider-connect and
+            specify  'localhost' under  Host  and '7888'  under  Port. For  security
+            reasons  nREPL  session can  only  be  opened  locally. However,  it  is
+            possible to  access the nREPL port  via ssh port forwarding  even from a
+            remote  machine.  The  port to  be  used  can  be  changed in  the  file
+            <i>~/.nightly-build/local-settings.clj</i>, which  is created  the first
+            time the bond server is started.</p>
 
-        <h3>Eclipse</h3>
-        <p>Besides Microsoft Visual Studio, which  is not recommended for use on
-        Unix respectively GNU/Linux systems,
-        <a href="https://www.eclipse.org/">Eclipse</a>
-        is the
-        <a href="https://pypl.github.io/IDE.html">most widely used IDE today</a>.
-        The plugin
-        <a href="http://doc.ccw-ide.org/documentation.html">Counterclockwise</a>
-        offers relatively good Clojure support.</p>
+          <h3>Eclipse</h3>
+          <p>Besides Microsoft Visual Studio, which  is not recommended for use on
+            Unix respectively GNU/Linux systems,
+            <a href="https://www.eclipse.org/">Eclipse</a>
+            is the
+            <a href="https://pypl.github.io/IDE.html">most widely used IDE today</a>.
+            The plugin
+            <a href="http://doc.ccw-ide.org/documentation.html">Counterclockwise</a>
+            offers relatively good Clojure support.</p>
 
-        <p>Note  that although  Counterclockwise is  still fully  functional, it
-        does not  appear to  be currently actively  maintained. Also,  since the
-        concept  of  workspaces takes  some  getting  used  to by  newcomers  to
-        Eclipse,  this  plugin  is  only  recommended  for  experienced  Eclipse
-        developers.</p>
+          <p>Note  that although  Counterclockwise is  still fully  functional, it
+            does not  appear to  be currently actively  maintained. Also,  since the
+            concept  of  workspaces takes  some  getting  used  to by  newcomers  to
+            Eclipse,  this  plugin  is  only  recommended  for  experienced  Eclipse
+            developers.</p>
 
-        <p>Both   Eclipse    and   the   Counterclockwise   plugin    are   free
-        software   and   can    therefore   be   used   free    of   charge   in
-        commercial   environments.  The   source   code  is   available  at   <a
-        href="https://github.com/ccw-ide/ccw">Github</a>.</p>
+          <p>Both   Eclipse    and   the   Counterclockwise   plugin    are   free
+            software   and   can    therefore   be   used   free    of   charge   in
+            commercial   environments.  The   source   code  is   available  at   <a
+                                                                                    href="https://github.com/ccw-ide/ccw">Github</a>.</p>
 
-        <table class="doc-image">
-          <caption align="bottom">Fig 2: Eclipse with Counterclockwise</caption>
-          <tr><td><img src="img/eclipse_ccw.png"></td></tr>
-        </table>
+          <table class="doc-image">
+            <caption align="bottom">Fig 2: Eclipse with Counterclockwise</caption>
+            <tr><td><img src="img/eclipse_ccw.png"></td></tr>
+          </table>
 
-        <p>The figure above shows the Counterclockwise Clojure plugin configured
-        for  the usage  with the  Clojure programming  language. You  can easily
-        connect Eclipse to a running instance of Bond by selecting the pull down
-        menu 'Window',  'Connect to REPL'  and specify for host  'localhost' and
-        for port 7888.</p>
+          <p>The figure above shows the Counterclockwise Clojure plugin configured
+            for  the usage  with the  Clojure programming  language. You  can easily
+            connect Eclipse to a running instance of Bond by selecting the pull down
+            menu 'Window',  'Connect to REPL'  and specify for host  'localhost' and
+            for port 7888.</p>
 
-        <h3>IntelliJ IDEA</h3>
-        <p>The  third  development  environment,  which  we  will  only  briefly
-        discuss  here,   is  <a  href="https://www.jetbrains.com/idea/">IntelliJ
-        IDEA</a>  from JetBrains.  Similar to  Eclipse,  it is  mostly used  for
-        the  development  of  software  written  in  Java,  but  numerous  other
-        programming  languages  are  also supported.  For  software  development
-        under  Clojure  and  Clojurescript  there   is  the  very  extensive  <a
-        href="https://cursive-ide.com/">Cursive</a> plugin.</p>
+          <h3>IntelliJ IDEA</h3>
+          <p>The  third  development  environment,  which  we  will  only  briefly
+            discuss  here,   is  <a  href="https://www.jetbrains.com/idea/">IntelliJ
+              IDEA</a>  from JetBrains.  Similar to  Eclipse,  it is  mostly used  for
+            the  development  of  software  written  in  Java,  but  numerous  other
+            programming  languages  are  also supported.  For  software  development
+            under  Clojure  and  Clojurescript  there   is  the  very  extensive  <a
+                                                                                    href="https://cursive-ide.com/">Cursive</a> plugin.</p>
 
-        <p>Unlike  the Clojure  extensions  for Emacs  and  Eclipse, the  plugin
-        Cursive is not free software. There is a so-called 'free license', which
-        can  be downloaded  free of  charge. However,  Cursive is  not available
-        in  source code,  nor  does  the license  allow  commercial  use of  the
-        software.</p>
+          <p>Unlike  the Clojure  extensions  for Emacs  and  Eclipse, the  plugin
+            Cursive is not free software. There is a so-called 'free license', which
+            can  be downloaded  free of  charge. However,  Cursive is  not available
+            in  source code,  nor  does  the license  allow  commercial  use of  the
+            software.</p>
 
-        <table class="doc-image">
-          <caption align="bottom">Fig 3: IntelliJ IDEA with Cursive</caption>
-          <tr><td><img src="img/intellij_cursive.png"></td></tr>
-        </table>
+          <table class="doc-image">
+            <caption align="bottom">Fig 3: IntelliJ IDEA with Cursive</caption>
+            <tr><td><img src="img/intellij_cursive.png"></td></tr>
+          </table>
 
-        <p>As  you can  already guess  from the  screenshot above,  IntelliJ and
-        Cursive offers superior features that go far beyond the functional range
-        of  Counterclockwise.  In  contrast  to  Counterclockwise,  this  plugin
-        also  seems to  be much  better integrated  into the  latest version  of
-        IntelliJ.</p>
+          <p>As  you can  already guess  from the  screenshot above,  IntelliJ and
+            Cursive offers superior features that go far beyond the functional range
+            of  Counterclockwise.  In  contrast  to  Counterclockwise,  this  plugin
+            also  seems to  be much  better integrated  into the  latest version  of
+            IntelliJ.</p>
 
-        <p>Cursive      allows      also      to      use      various      REPL
-        connections     and     configurations.      Refer     to     the     <a
-        href="https://cursive-ide.com/userguide">Cursive  documentation</a>  how
-        to do this.</p>
+          <p>Cursive      allows      also      to      use      various      REPL
+            connections     and     configurations.      Refer     to     the     <a
+                                                                                    href="https://cursive-ide.com/userguide">Cursive  documentation</a>  how
+            to do this.</p>
 
-        <h3>Alternatives</h3>
-        <p>There are much more than the development systems shown here. However,
-        we have limited  ourselves to the three most commonly  used platforms in
-        the previous illustrations with Emacs, Eclipse and IntelliJ.</p>
+          <h3>Alternatives</h3>
+          <p>There are much more than the development systems shown here. However,
+            we have limited  ourselves to the three most commonly  used platforms in
+            the previous illustrations with Emacs, Eclipse and IntelliJ.</p>
 
-        <p>But we  should at  least mention the  <a href="https://atom.io/">Atom
-        Text  Editor</a>  developed   by  the  Github  team  which   aims  at  a
-        similar  extensibility   as  Emacs   and  relies  on   web  technologies
-        from   scratch.   Atom   is   free  software   and   offers   with   the
-        plugins   <a  href="https://atom.io/packages/proto-repl">Proto-Repl</a>,
-        <a   href="https://atom.io/packages/atom-paredit">paredit</a>   and   <a
-        href="https://atom.io/packages/parinfer">parinfer</a> quite good clojure
-        support.</p>
+          <p>But we  should at  least mention the  <a href="https://atom.io/">Atom
+              Text  Editor</a>  developed   by  the  Github  team  which   aims  at  a
+            similar  extensibility   as  Emacs   and  relies  on   web  technologies
+            from   scratch.   Atom   is   free  software   and   offers   with   the
+            plugins   <a  href="https://atom.io/packages/proto-repl">Proto-Repl</a>,
+            <a   href="https://atom.io/packages/atom-paredit">paredit</a>   and   <a
+                                                                                    href="https://atom.io/packages/parinfer">parinfer</a> quite good clojure
+            support.</p>
 
-        <p>Furthermore, <a  href="https://sekao.net/nightcode">Nightcode</a> and
-        <a   href="http://lighttable.com">Lighttable</a>  are   two  development
-        environments especially designed  for Clojure, which both  focus on easy
-        learnability. There are also a number of other systems and plugins. The
-        page <a href="https://www.slant.co/topics/11929/~ide-for-clojure">slant.co</a>
-        gives a good overview about most of them.</p>
+          <p>Furthermore, <a  href="https://sekao.net/nightcode">Nightcode</a> and
+            <a   href="http://lighttable.com">Lighttable</a>  are   two  development
+            environments especially designed  for Clojure, which both  focus on easy
+            learnability. There are also a number of other systems and plugins. The
+            page <a href="https://www.slant.co/topics/11929/~ide-for-clojure">slant.co</a>
+            gives a good overview about most of them.</p>
 
+        </div>
       </div>
     </div>
 
