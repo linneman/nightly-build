@@ -1,4 +1,4 @@
-(defproject bond "1.0.0"
+(defproject bond "1.0.1"
   :description "A Functional Programming Environment for the Automatic Creation of Software Release Candidates"
   :url "https://linneman.github.io/bond"
   :license {:name "GNU Lesser General Public License"
