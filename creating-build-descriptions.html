@@ -104,38 +104,38 @@
             as indicated in the following example:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (list
-              [:cleanup
-              (format
-              "rm -rf %s"
-              dev-build-root) 120]
-              [:init
-              (format
-              "mkdir -p %s"
-              dev-build-root) 10]
-              [:fetch
-              (format
-              (lstr
-              "cd %s &&"
-              "repo init -u %s -b %s -m %s &&"
-              "repo sync -q -j 4 2>&1")
-              dev-build-root
-              manifest-url manifest-repo-branch dev-manifest) 7200]
+(list
+  [:cleanup
+   (format
+    "rm -rf %s"
+    dev-build-root) 120]
+  [:init
+   (format
+    "mkdir -p %s"
+    dev-build-root) 10]
+  [:fetch
+   (format
+    (lstr
+     "cd %s &&"
+     "repo init -u %s -b %s -m %s &&"
+     "repo sync -q -j 4 2>&1")
+    dev-build-root
+    manifest-url manifest-repo-branch dev-manifest) 7200]
 
-              ;; further steps ...
+  ;; further steps ...
 
-              [:anything-changed?
-              (format
-              (lstr
-              "cd %s && if [ -f no_changes ]; then"
-              "  echo 'no new changes' > nightly.log;"
-              "  exit 1;"
-              "fi")
-              dev-build-root) 10]
+  [:anything-changed?
+   (format
+    (lstr
+     "cd %s && if [ -f no_changes ]; then"
+     "  echo 'no new changes' > nightly.log;"
+     "  exit 1;"
+     "fi")
+    dev-build-root) 10]
 
-              ;; further steps ...
+  ;; further steps ...
 
-              )</pre></font>
+)</pre></font>
 
           <p>Let's  have closer  look what  these  do in  the aboves  hypothetical
             example.</p>
@@ -227,46 +227,44 @@
             <i>sample_config.clj</i>:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              [:cleanup
-              "echo 'do the cleanup'" 20
-              :term-cb ;; clojure handler for sending status email
-              (fn [session error]
-              (let [{:keys [build-uuid build-name]} session
-              current-task (-> session :current-task deref)
-              sw-version "v1.2.3"
-              anything-changed? (not= :anything-changed? (:id current-task))
-              changelog "changelog.txt"
-              [subject mail-txt]
-              (if anything-changed?
-              (if (empty? error)
-              [(format "nightly build %s, sw version %s successful!" build-uuid sw-version)
-              (format (lstr
-              "Dear Colleagues,\n\n"
-              "This message is to inform you that the nightly build %s, sw version %s\n"
-              "has been successfully compiled:\n\n"
-              "The following changes have been introduced:\n\n"
-              "%s")
-              build-uuid sw-version changelog)]
-              [(format "nightly build %s, sw version %s failed!" build-uuid sw-version)
-              (format (lstr
-              "Dear Colleagues,\n\n"
-              "This message is to inform you that the nightly build %s, sw version %s\n"
-              "failed within the build task %s with the following error:\n\n"
-              "Error: %s\n\n"
-              "The following changes have been introduced:\n\n"
-              "%s")
-              build-uuid sw-version (:id current-task) error changelog)])
-              [(format "no changes detected in nightly build %s" build-uuid)
-              (format (lstr
-              "Dear Colleagues,\n\n"
-              "There have been no new changes discovered within the nightly build %s.\n")
-              build-uuid)])]
-              (println "___ send email: " mail-txt)
-              [(if (= error "processing stopped!")
-              0
-              (sendmail *email-build-status-recipients* subject mail-txt))
-              (hash-args sw-version changelog anything-changed?)]))]
-          </pre></font>
+[:cleanup
+  "echo 'do the cleanup'" 20
+ :term-cb ;; clojure handler for sending status email
+  (fn [session error]
+           (let [{:keys [build-uuid build-name]} session
+                 current-task (-> session :current-task deref)
+                 sw-version "v1.2.3"
+                 anything-changed? (not= :anything-changed? (:id current-task))
+                 changelog "changelog.txt"
+                 [subject mail-txt]
+                 (if anything-changed?
+                   (if (empty? error)
+                     [(format "nightly build %s, sw version %s successful!" build-uuid sw-version)
+                      (format (lstr
+                               "Dear Colleagues,\n\n"
+                               "This message is to inform you that the nightly build %s, sw version %s\n"
+                               "has been successfully compiled:\n\n"
+                               "The following changes have been introduced:\n\n"
+                               "%s")
+                              build-uuid sw-version changelog)]
+                     [(format "nightly build %s, sw version %s failed!" build-uuid sw-version)
+                      (format (lstr
+                               "Dear Colleagues,\n\n"
+                               "This message is to inform you that the nightly build %s, sw version %s\n"
+                               "failed within the build task %s with the following error:\n\n"
+                               "Error: %s\n\n"
+                               "The following changes have been introduced:\n\n"
+                               "%s")
+                              build-uuid sw-version (:id current-task) error changelog)])
+                   [(format "no changes detected in nightly build %s" build-uuid)
+                    (format (lstr
+                             "Dear Colleagues,\n\n"
+                             "There have been no new changes discovered within the nightly build %s.\n")
+                            build-uuid)])]
+             [(if (= error "processing stopped!")
+                0
+                (sendmail *email-build-status-recipients* subject mail-txt))
+              (hash-args sw-version changelog anything-changed?)])))]</pre></font>
 
           <p>In this sample  code it is assumed that the  software version and the
             changelog are present.  The associated information must  be generated by
@@ -330,13 +328,12 @@
             out in the repl by evaluating the following test expression:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (let [sw-version "1.2.3"
-              changelog "my change log"
-              anything-changed? true]
-              (hash-args sw-version changelog anything-changed?))
+(let [sw-version "1.2.3"
+      changelog "my change log"
+      anything-changed? true]
+  (hash-args sw-version changelog anything-changed?))
 
-              -> {:sw-version 1.2.3, :changelog my change log, :anything-changed? true}
-          </pre></font>
+-> {:sw-version 1.2.3, :changelog my change log, :anything-changed? true}</pre></font>
 
           <h3>Bringing it all together, Build Descriptions and the Crontab</h3>
           <p>We   have   seen   how   build   steps   and   termination   handlers
@@ -362,26 +359,26 @@
           <p>Let's start with the function <i>create-build-description-sample-1</i>:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (defn create-build-description-sample-1
-              []
-              (let [build-machine {:host "localhost" :port 22}
-              work-spaces "/mnt/ssd1/ol/nightly-builds"
-              build-name "build-example"
-              current-task (atom nil)
-              date-str (get-date-str)
-              build-uuid (str build-name "_" date-str)
-              build-dir (str work-spaces "/" build-name "/" date-str)
-              log-dir (str (System/getProperty "user.home") "/nightly-build-logs")
-              _ (mkdirs log-dir)
-              build-log-filename (str log-dir "/nightly_" date-str ".log")
-              change-log-filename (str log-dir "/changelog_" date-str ".log")
-              version-filename (str log-dir "/version_" date-str ".log")
+(defn create-build-description-sample-1
+  []
+  (let [build-machine {:host "localhost" :port 22}
+        work-spaces "/mnt/ssd1/ol/nightly-builds"
+        build-name "build-example"
+        current-task (atom nil)
+        date-str (get-date-str)
+        build-uuid (str build-name "_" date-str)
+        build-dir (str work-spaces "/" build-name "/" date-str)
+        log-dir (str (System/getProperty "user.home") "/nightly-build-logs")
+        _ (mkdirs log-dir)
+        build-log-filename (str log-dir "/nightly_" date-str ".log")
+        change-log-filename (str log-dir "/changelog_" date-str ".log")
+        version-filename (str log-dir "/version_" date-str ".log")
 
-              env (hash-args build-name build-uuid build-machine work-spaces build-dir
-              current-task
-              build-log-filename
-              change-log-filename version-filename)]
-              (merge env (create-build-steps-sample-1 env))))
+        env (hash-args build-name build-uuid build-machine work-spaces build-dir
+        current-task
+        build-log-filename
+        change-log-filename version-filename)]
+    (merge env (create-build-steps-sample-1 env))))
           </pre></font>
 
           <p>This function  invokes in line  20 <i>create-build-steps-sample-1</i>
@@ -428,40 +425,40 @@
               create-build-steps-sample-1</i> looks like this:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (defn create-build-steps-sample-1
-              "build steps creation example"
-              [{:keys [build-name build-uuid build-machine work-spaces build-dir
-              current-task build-log-filename change-log-filename version-filename]}]
-              (let [cleanup-script (-> "cleanup.py" get-resource quote-string-for-echoing)
+(defn create-build-steps-sample-1
+  "build steps creation example"
+  [{:keys [build-name build-uuid build-machine work-spaces build-dir
+           current-task build-log-filename change-log-filename version-filename]}]
+  (let [cleanup-script (-> "cleanup.py" get-resource quote-string-for-echoing)
 
-              task-list
-              (filter
-              identity
-              (list
-              ;; task list elements
-              ;; ...
-              ))
+        task-list
+        (filter
+         identity
+         (list
+         ;; task list elements
+         ;; ...
+         ))
 
-              terminate
-              [:cleanup
-              "echo 'do the cleanup'" 20
-              :term-cb ;; clojure handler for sending status email
-              (fn [session error]
-              ;; termination handler definitions
-              ;; ...
-              )]]
-              (hash-args task-list terminate)))
+         terminate
+         [:cleanup
+          "echo 'do the cleanup'" 20
+          :term-cb ;; clojure handler for sending status email
+          (fn [session error]
+            ;; termination handler definitions
+            ;; ...
+            )]]
+    (hash-args task-list terminate)))
           </pre></font>
 
           <p>The  <a href="https://clojuredocs.org/clojure.core/filter">filter</a>
             function  from  Clojure's  core  namespace which  is  invoked  in  lines
             8  and  following  is  only  used here  as  a  placeholder.  Its  second
             function  argument defines  which  elements are  filtered  out when  its
-            invocation with a  given element returns logical false.  The function <a
-                                                                                    href="https://clojuredocs.org/clojure.core/identity">identity</a> simply
+            invocation with a  given element returns logical false.  The function
+            <a href="https://clojuredocs.org/clojure.core/identity">identity</a> simply
             returns  any   given  argument.  This   allows  us  to   easily  disable
-            certain  elements   in  a  task   list  by   enclosing  it  by   the  <a
-                                                                                    href="https://clojuredocs.org/clojure.core/comment">comment function</a>
+            certain  elements   in  a  task   list  by   enclosing  it  by   the
+            <a href="https://clojuredocs.org/clojure.core/comment">comment function</a>
             whose return value nil is equivalent  to logical false and therefore the
             commented  out element  is  in fact  filtered out  from  the task  list.
             Without the filtering we would end up with nil elements in the task list
@@ -471,7 +468,7 @@
             <i>identity</i>  in  line   9  with  a  conditional   expression  as  in
             example:</p
 
-                      <font size="5"><pre class="prettyprint lang-clj">#(= (first %) :second)</pre></font>
+          <font size="5"><pre class="prettyprint lang-clj">#(= (first %) :second)</pre></font>
 
           <p>This will  filter out all items  from the task list  except the build
             step <i>:second</i>. These options for filtering specific items from the
@@ -482,8 +479,8 @@
             associated  with   all  required   build  paramteres  which   have  been
             generated in  the the  function <i>create-build-description-sample-1</i>
             which   we    already   discussed.   Within    line   3   and    4   the
-            entries   of   this   hashmap   are    extracted   by   so   called   <a
-                                                                                    href="https://clojure.org/guides/destructuring">desctructuring</a>. This
+            entries   of   this   hashmap   are    extracted   by   so   called
+            <a href="https://clojure.org/guides/destructuring">desctructuring</a>. This
             allows to  directly create bindings between  the keys and the  values of
             the build parameter hash map which we can later use in the generation of
             the task list and the termination handler.</p>
@@ -498,8 +495,8 @@
           <p>This   data  structure   is   usually   created  immediately   before
             starting  the  build.  In  our  application,  it  is  triggered  usually
             time-controlled overnight.  The start times  are defined in  a so-called
-            <i>cron  table</i>,  which  is  based  on the  nomenclature  of  the  <a
-                                                                                    href="https://en.wikipedia.org/wiki/Cron">cron  daemon</a>   used  under
+            <i>cron  table</i>,  which  is  based  on the  nomenclature  of  the
+            <a href="https://en.wikipedia.org/wiki/Cron">cron daemon</a>   used  under
             Unix.</p>
 
           <p>The  <i>crontab</i>  also  provides  a  list  of  all  extings  build
@@ -512,10 +509,10 @@
             <i>ltenad_config.clj</i>:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (def cron-build-descriptions
-              [{:m 0 :h 00 :dom false :mon false :dow false :desc create-build-description-mdm9607-bl2_2_0}
-              {:m 0 :h 05 :dom false :mon false :dow false :desc create-build-description-mdm9607-bl2_2_0-quectel}
-              {:m 0 :h 20 :dom false :mon false :dow false :enabled true :desc create-build-description-mdm9607-bl2_0_1}])
+(def cron-build-descriptions
+  [{:m 0 :h 00 :dom false :mon false :dow false :desc create-build-description-mdm9607-bl2_2_0}
+   {:m 0 :h 05 :dom false :mon false :dow false :desc create-build-description-mdm9607-bl2_2_0-quectel}
+   {:m 0 :h 20 :dom false :mon false :dow false :enabled true :desc create-build-description-mdm9607-bl2_0_1}])
           </pre></font>
 
           <p>In the given example three different build jobs are defined which all
