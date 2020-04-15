@@ -179,9 +179,9 @@
           <p>The following examples illustrate how these operations are used:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (first (list 1 2 "hello"))   -> 1
-              (rest  (list 1 2 "hello"))   -> (2 "hello")
-              (conj  (list 1 2 "hello") 0) -> (0 1 2 "hello")</pre></font>
+(first (list 1 2 "hello"))   -> 1
+(rest  (list 1 2 "hello"))   -> (2 "hello")
+(conj  (list 1 2 "hello") 0) -> (0 1 2 "hello")</pre></font>
 
           <p>The build  sequences in Bond are  just Clojure lists or  build steps.
             When a step has been successfully  executed the lists of remaining build
@@ -196,12 +196,12 @@
             used:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              [1 2 "hello"]            -> [1 2 "hello"]
-              (first [1 2 "hello"])    -> 1
-              (rest [1 2 "hello"])     -> (2 "hello")
-              (subvec [1 2 "hello"] 1) -> [2 "hello")
-              (conj [1 2 "hello"] 0)   -> [1 2 "hello" 0])
-              (nth [1 2 "hello"] 1)    -> 2</pre></font>
+[1 2 "hello"]            -> [1 2 "hello"]
+(first [1 2 "hello"])    -> 1
+(rest [1 2 "hello"])     -> (2 "hello")
+(subvec [1 2 "hello"] 1) -> [2 "hello")
+(conj [1 2 "hello"] 0)   -> [1 2 "hello" 0])
+(nth [1 2 "hello"] 1)    -> 2</pre></font>
 
           <p>Note that  the rest function returns  a list instead of  a vector and
             needs to  iterate over all list  elements. It is recommended  to use the
@@ -222,9 +222,9 @@
             curly brackets as illustrated below:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (def day-of-week {1 "Monday" 2 "Thuesday" 3 "Wednesday" 4 "Thursday"
-              5 "Friday" 6 "Saturday" 7 "Sunday"})
-              (day-of-week 1)  -> "Monday"</pre></font>
+(def day-of-week {1 "Monday" 2 "Thuesday" 3 "Wednesday" 4 "Thursday"
+                  5 "Friday" 6 "Saturday" 7 "Sunday"})
+(day-of-week 1)  -> "Monday"</pre></font>
 
           <p>In the given  example we define the variable days-of-week  with a map
             where each  day of week  can be  accessed via its  associated index.</p>
@@ -233,10 +233,10 @@
             provides a specific data type for this:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (def weekday-index {:Monday 1 :Thuesday 2 :Wednesday 3 :Thursday 4
-              :Friday 5 :Saturday 6 :Sunday 7})
-              (weekday-index :Monday)  ->  1
-              (:Monday weekday-index)  ->  1</pre></font>
+(def weekday-index {:Monday 1 :Thuesday 2 :Wednesday 3 :Thursday 4
+                    :Friday 5 :Saturday 6 :Sunday 7})
+(weekday-index :Monday)  ->  1
+(:Monday weekday-index)  ->  1</pre></font>
 
           <p>Unlike the previously  used strings and integer  key values, keywords
             can be  used like function invocations  as illustrated in line  4 in the
@@ -252,10 +252,10 @@
             map:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (def rgb-colors-1 {:red [255 0 0] :green [0 255 0]})
-              (def rgb-colors-2 (assoc rgb-colors-1 :blue [0 0 255]))
-              rgb-colors-1 -> {:red [255 0 0] :green [0 255 0]}
-              rgb-colors-2 -> {:red [255 0 0] :green [0 255 0] :blue [0 0 255]}</pre></font>
+(def rgb-colors-1 {:red [255 0 0] :green [0 255 0]})
+(def rgb-colors-2 (assoc rgb-colors-1 :blue [0 0 255]))
+rgb-colors-1 -> {:red [255 0 0] :green [0 255 0]}
+rgb-colors-2 -> {:red [255 0 0] :green [0 255 0] :blue [0 0 255]}</pre></font>
 
           <p>Note that the definition in line  3 is not changed by the association
             of  a  new  element  in  line  4.  Instead  the  data  in  the  variable
@@ -274,8 +274,7 @@
             simple function which  adds two variables and assign it  to the variable
             add:</p>
 
-          <font size="5"><pre class="prettyprint lang-clj">
-              (def add (fn add [a b] (+ a b)))</pre></font>
+          <font size="5"><pre class="prettyprint lang-clj">(def add (fn add [a b] (+ a b)))</pre></font>
 
           <p>The variables of the function are declared inside square brackets. The
             body of the function <span style="font:monospace;">(+ a b)</span> is just
@@ -283,18 +282,17 @@
             a similar effect by:
           </p>
 
-          <font size="5"><pre class="prettyprint lang-clj">
-              (def add +)</pre></font>
+          <font size="5"><pre class="prettyprint lang-clj">(def add +)</pre></font>
 
           <p>Since a clojure  program consists out of a lot  of top level function
             definitions there is short cut which  defines a functions and assigns it
             to the specified identifier with <i>defn</i>:</p>
 
           <font size="4"><pre class="prettyprint lang-clj linenums">
-              (defn add
-              "adds the two arguments a and b and returns the result"
-              [a b]
-              (+ a b))</pre></font>
+(defn add
+  "adds the two arguments a and b and returns the result"
+  [a b]
+  (+ a b))</pre></font>
 
           <p>In this example we declare a  comment about what the function does in
             the seconds line,  a so called doc string. Doc  strings can be retrieved
@@ -308,12 +306,12 @@
             of a compilation process with a Clojure hash-map:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (def my-build-description
-            {:build-machine {:host "localhost" :port 22}
-            :build-name "project-xyz"
-            :build-date (str (java.util.Date.))
-            ;; ...
-            })</pre>
+(def my-build-description
+  {:build-machine {:host "localhost" :port 22}
+   :build-name "project-xyz"
+   :build-date (str (java.util.Date.))
+   ;; ...
+  })</pre>
 
           <p>In  this very  simplified case  the parameters  of the  build process
             are stored  under the  keys <i>build-machine</i>,  <i>build-name</i> and
@@ -324,13 +322,13 @@
             is done using the Clojure form <i>let</i>:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (defn print-build-description
-            "print build-description tags to stdout"
-            [build-description]
-            (let [build-machine (:build-machine build-description)
-            build-name (:build-name build-description)
-            build-date (:build-date build-description)]
-            (println build-machine build-name build-date)))</pre>
+(defn print-build-description
+  "print build-description tags to stdout"
+  [build-description]
+  (let [build-machine (:build-machine build-description)
+        build-name (:build-name build-description)
+        build-date (:build-date build-description)]
+    (println build-machine build-name build-date)))</pre>
 
           <p>The bindings which are created by  let do have local scope only. They
             are  also refered  to as  <i>local bindings</i>  for this  reason. Local
@@ -339,8 +337,8 @@
             <i>print-build-descrition</i>:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (let [build-name "ABC"]
-            (print-build-description my-build-description)) -> {:host localhost, :port 22} project-xyz Sun Feb 23 13:16:54 CET 2020</pre>
+(let [build-name "ABC"]
+  (print-build-description my-build-description)) -> {:host localhost, :port 22} project-xyz Sun Feb 23 13:16:54 CET 2020</pre>
 
           <p>The inner binding of the symbol <i>build-name</i> to the contents of
             hash-map <i>my-build-descriptions</i> overrule the definition of the
@@ -352,18 +350,18 @@
             further simplify that as illustrated in the following example:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (defn print-build-description
-            "print build-description tags to stdout"
-            [build-description]
-            (let [{:keys [build-machine build-name build-date]} build-description]
-            (println build-machine build-name build-date))) </pre>
+(defn print-build-description
+  "print build-description tags to stdout"
+  [build-description]
+  (let [{:keys [build-machine build-name build-date]} build-description]
+    (println build-machine build-name build-date)))</pre>
 
           <p>This version of <i>print-build-description</i> is synonymous with the
             first definition but much shorter. In  the context of the declaration of
             build descriptions <i>descructuring</i> is frequently used.</p>
 
-          <p>The     Bond     framework      provides     an     additional     <a
-                                                                                  href="https://clojure.org/reference/macros">macro</a>   which  kind   of
+          <p>The Bond framework provides an additional
+            <a href="https://clojure.org/reference/macros">macro</a>   which  kind   of
             inverts the destructuring operation. Often it is required to rebuild the
             originally complex  data structure that  has been provided e.g.  via and
             input parameter. Instead of repeating key-value pairs to do so the macro
@@ -371,22 +369,22 @@
             given symbols as illustrated in the following example:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (defn extend-build-description
-            "adds another key-value to a given build-description"
-            [build-description]
-            (let [{:keys [build-machine build-name build-date]} build-description
-            {:keys [host port]} build-machine
-            version "v1.2.3"]
-            (hash-args host port build-name build-date version)))</pre>
+(defn extend-build-description
+  "adds another key-value to a given build-description"
+  [build-description]
+  (let [{:keys [build-machine build-name build-date]} build-description
+        {:keys [host port]} build-machine
+        version "v1.2.3"]
+    (hash-args host port build-name build-date version)))</pre>
 
           <p>Here  we  destructure the  <i>host</i>  and  <i>port</i> symbols  and
             return a flat hash map with these values:</p>
 
           <pre class="prettyprint lang-clj">
-            (extend-build-description my-build-description) ->
+(extend-build-description my-build-description) ->
 
-            {:host localhost, :port 22, :build-name project-xyz,
-            :build-date Sun Feb 23 13:16:54 CET 2020, :version v1.2.3}</pre>
+{:host localhost, :port 22, :build-name project-xyz,
+ :build-date Sun Feb 23 13:16:54 CET 2020, :version v1.2.3}</pre>
 
           <p>This basically  wraps all  the concepts up  which are  typically used
             in  a  so  called  <i>build-description</i>  which  is  the  fundamental
@@ -405,28 +403,27 @@
             and store the results in another  sequence. This operation is refered as
             <i>map</i> within Lisp languages:</p>
 
-          <pre class="prettyprint lang-clj">
-            (map
-            (fn [e] (* e e))
-            [0 1 2 3])              ->    (0 1 4 9)</pre>
+          <pre class="prettyprint lang-clj linenums">
+(map
+  (fn [e] (* e e))
+  [0 1 2 3])              ->    (0 1 4 9)</pre>
 
           <p>Map takes a function and a  sequence as input arguments. The function
             is applied  to each element  of the sequence  to create the  result. The
             expression is often found to be formulated more concisely. The following
             line is synonymous but shorted:</p>
 
-          <pre class="prettyprint lang-clj">
-            (map #(* % %) (range 4))  ->    (0 1 4 9)</pre>
+          <pre class="prettyprint lang-clj">(map #(* % %) (range 4))  ->    (0 1 4 9)</pre>
 
           <p>The  second most  important sequence  operation is  <i>reduce</i>. It
             iterates  over  sequence elements  and  accumaltes  the result.  In  the
             following example  we use <i>reduce</i> to  sum up the square  values of
             the previous example:</p>
-          <pre class="prettyprint lang-clj">
-            (reduce
-            (fn [res e] (+ res (* e e)))
-            0
-            (range 4))              -> 14</pre>
+          <pre class="prettyprint lang-clj linenums">
+(reduce
+  (fn [res e] (+ res (* e e)))
+  0
+  (range 4))              -> 14</pre>
 
           <p><i>Map</i>  and <i>reduce</i>  can  be applied  to  all of  Clojure's
             sequence data  types. When appropriately  used, they allow  to implement
@@ -440,19 +437,19 @@
             <i>if</i> clause and optionally the <i>else</i> clause:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (defn multiple-of-two
-            [x]
-            (if (even? x) "yes" "no"))
+(defn multiple-of-two
+  [x]
+  (if (even? x) "yes" "no"))
 
-            (multiple-of-two 17)  ->  no</pre>
+(multiple-of-two 17)  ->  no</pre>
 
           <p>The  above  example is  a  little  bit  odd  and would  be  typically
             formulated as:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (defn multiple-of-two?
-            [x]
-            (even? x))</pre>
+(defn multiple-of-two?
+  [x]
+  (even? x))</pre>
 
           <p>The  function  returns  the  directly boolean  result  value  of  the
             operation  <i>even?</i> where  questionmark  indicates  that the  boolean
@@ -465,16 +462,16 @@
             the following example:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (let [logging-enabled true]
-            (reduce
-            (fn [res e]
-            (if logging-enabled
-            (do (println "The next element is: " e)
-            (println "The current result is: " res)
-            (println)))
-            (+ res (* e e)))
-            0
-            (range 4)))</pre>
+(let [logging-enabled true]
+  (reduce
+    (fn [res e]
+      (if logging-enabled
+      (do (println "The next element is: " e)
+      (println "The current result is: " res)
+      (println)))
+      (+ res (* e e)))
+  0
+  (range 4)))</pre>
 
           <p>This  version  of the  previously  used  <i>recude</i> example  comes
             with  debug  print operations  which  can  be  enabled and  disabled  by
@@ -492,28 +489,28 @@
             instead of <i>if</i>:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (let [logging-enabled true]
-            (reduce
-            (fn [res e]
-            (when logging-enabled
-            (println "The next element is: " e)
-            (println "The current result is: " res)
-            (println))
-            (+ res (* e e)))
-            0
-            (range 4)))</pre>
+(let [logging-enabled true]
+  (reduce
+    (fn [res e]
+      (when logging-enabled
+      (println "The next element is: " e)
+      (println "The current result is: " res)
+      (println))
+      (+ res (* e e)))
+  0
+  (range 4)))</pre>
 
           <h4>Loops</h4>
           <p>Like in other Lisp dialects Clojure implements loops recursively as
             depicted in the following example:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (defn square-sum
-            [res remain]
-            (let [e (first remain)]
-            (if e
-            (recur (+ res (* e e)) (rest remain))
-            res)))</pre>
+(defn square-sum
+  [res remain]
+    (let [e (first remain)]
+      (if e
+        (recur (+ res (* e e)) (rest remain))
+        res)))</pre>
 
           <p>Here  we define  a function  <i>square</i> which  recursively invokes
             itself until there  are no more elements in  the sequence <i>remain</i>.
@@ -535,19 +532,16 @@
             as illustated here:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (defn square-sum
-            [res remain]
-            (let [e (first remain)]
-            (if e
-            (square (+ res (* e e)) (rest remain))
-            res)))</pre>
+(defn square-sum
+  [res remain]
+  (let [e (first remain)]
+    (if e
+      (square (+ res (* e e)) (rest remain))
+      res)))</pre>
 
           <p>we get the following result:</p>
 
-          <pre class="prettyprint lang-clj">
-            (square-sum 0 (range 10000))
-
-            -> Execution error (StackOverflowError)</pre>
+          <pre class="prettyprint lang-clj">(square-sum 0 (range 10000)) -> Execution error (StackOverflowError)</pre>
 
           <p>because in  this case the  10.000 invocations of  <i>square</i> consumed
             the complete stack of the JVM!</p>
@@ -561,14 +555,14 @@
             following:</p>
 
           <pre class="prettyprint lang-clj linenums">
-            (defn square-sum
-            [x]
-            (loop [res 0
-            remain (range (inc x))]
-            (let [e (first remain)]
-            (if e
-            (recur (+ res (* e e)) (rest remain))
-            res))))</pre>
+(defn square-sum
+  [x]
+  (loop [res 0
+         remain (range (inc x))]
+    (let [e (first remain)]
+      (if e
+        (recur (+ res (* e e)) (rest remain))
+        res))))</pre>
 
           <p>Note  that  the  range  function  does not  include  the  last  value
             so  (range  3)  generates  the  values   0,  1,  2  only.  We  therefore
@@ -582,11 +576,11 @@
             <using i>reduce</i>:</p>
 
 <pre class="prettyprint lang-clj linenums">
-  (defn square-sum
+(defn square-sum
   [x]
   (reduce
-  (fn [res e] (+ res (* e e)))
-  (range (inc x))))</pre>
+    (fn [res e] (+ res (* e e)))
+    (range (inc x))))</pre>
 
 <p>The initial value  for the accumulator has been ommited  in this example.
   Refer to the
@@ -615,8 +609,8 @@
 
 <p>We   hope  that   we   could   rise  your   interest   and  you   are
   encouraged  to  continue  your  journey   to  get  familiar  with  these
-  as  well.   We  already  gave  hints   where  to  go  next   in  the  <a
-                                                                          href="#why_clojure">beginning of this page.</a>Have a good start
+  as  well.   We  already  gave  hints   where  to  go  next   in  the
+  <a href="#why_clojure">beginning of this page.</a>Have a good start
   and a lot of fun with functional programming!</p>
 
 </div>
