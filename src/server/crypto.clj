@@ -16,6 +16,7 @@
   (:require [ring.util.codec :as codec])
   (:import java.security.SecureRandom
            java.security.MessageDigest
+           (org.apache.commons.codec.binary Base64)
            (javax.crypto Cipher Mac)
            (javax.crypto.spec SecretKeySpec IvParameterSpec)))
 
@@ -92,14 +93,16 @@
   (assert (> (count salt) 10))          ;would like to have >64 bit of salt
   (assert (> (count password) 4))       ;come on, how low can we go?
   (let [md (java.security.MessageDigest/getInstance "SHA-512")
-        encoder (sun.misc.BASE64Encoder.)]
+        encoder (Base64. 76 (byte-array [10]))]
     (.update md (.getBytes salt "UTF-8")) ;assume text salt
-    (.encode encoder
-             (loop [mangle (.getBytes password "UTF-8")
-                    passes 10]         ; paranoid, but are we paranoid enough?
-               (if (= 0 passes)
-                 mangle
-                 (recur (.digest md mangle) (dec passes)))))))
+    (.trim
+     (.encodeAsString
+      encoder
+      (loop [mangle (.getBytes password "UTF-8")
+             passes 10]         ; paranoid, but are we paranoid enough?
+        (if (= 0 passes)
+          mangle
+          (recur (.digest md mangle) (dec passes))))))))
 
 
 (defn get-encrypt-pass-and-salt
