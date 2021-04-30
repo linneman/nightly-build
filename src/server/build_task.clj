@@ -376,11 +376,11 @@
            state (get-task-sequence-state task-uuid)
            opt-term-results (-> :opt-term-results task-sequence)]
        (assoc res task-uuid
-              (-> (select-keys opt-term-results [:changelog :anything-changed? :sw-version])
+              (-> (select-keys opt-term-results [:anything-changed? :sw-version])
                   (assoc :task-uuid task-uuid)
                   (assoc :running? running?)
                   (assoc :state state)
-                  (assoc :error (:error task-sequence))))))
+                  (assoc :error (if (:error task-sequence) true false))))))
    (sorted-map-by #(compare %2 %1))
    (concat (filter anything-changed? (get-all-build-uuids))
            (filter is-task-sequence-running? (get-all-build-uuids))))))
