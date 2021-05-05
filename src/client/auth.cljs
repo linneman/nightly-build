@@ -188,7 +188,11 @@
                   {}
                   (fn [ajax-evt]
                     (let [resp (. (. ajax-evt -target) (getResponseText))]
-                      (render-login-popup-dialog (json/parse resp))))
+                      (let [resp (json/parse resp)]
+                        (if (and (logged-in?) (-> "name" resp empty?))
+                          (do (js/alert "Cookies were removed, relogin required!")
+                              (logout))
+                          (render-login-popup-dialog resp)))))
                   "GET")
     (render-login-popup-dialog
      {"name" "Anonym" "email" "" "role" "none"})))
