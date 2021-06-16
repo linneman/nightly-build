@@ -354,6 +354,14 @@
     (get-in @task-sequence [:opt-term-results :anything-changed?])))
 
 
+(defn processing-error
+  "returns the processing (agent) error string for the given task-uuid"
+  [task-uuid]
+  (when-let [task-sequence (get-task-sequence task-uuid)]
+    (when-let [aerr (agent-error task-sequence)]
+      (str (.getCause aerr)))))
+
+
 (defn get-changelog
   "retrieve changelog for given task-uuid"
   [task-uuid]
@@ -370,20 +378,23 @@
   []
   (seq
    (reduce
-   (fn [res task-uuid]
-     (let [task-sequence @(get-task-sequence task-uuid)
-           running? (is-task-sequence-running? task-uuid)
-           state (get-task-sequence-state task-uuid)
-           opt-term-results (-> :opt-term-results task-sequence)]
-       (assoc res task-uuid
-              (-> (select-keys opt-term-results [:anything-changed? :sw-version])
-                  (assoc :task-uuid task-uuid)
-                  (assoc :running? running?)
-                  (assoc :state state)
-                  (assoc :error (if (:error task-sequence) true false))))))
-   (sorted-map-by #(compare %2 %1))
-   (concat (filter anything-changed? (get-all-build-uuids))
-           (filter is-task-sequence-running? (get-all-build-uuids))))))
+    (fn [res task-uuid]
+      (let [task-sequence @(get-task-sequence task-uuid)
+            running? (is-task-sequence-running? task-uuid)
+            state (get-task-sequence-state task-uuid)
+            opt-term-results (-> :opt-term-results task-sequence)]
+        (assoc res task-uuid
+               (-> (select-keys opt-term-results [:anything-changed? :sw-version])
+                   (assoc :task-uuid task-uuid)
+                   (assoc :running? running?)
+                   (assoc :state state)
+                   (assoc :error (if (or (:error task-sequence)
+                                         (processing-error task-uuid))
+                                   true false))))))
+    (sorted-map-by #(compare %2 %1))
+    (concat (filter anything-changed? (get-all-build-uuids))
+            (filter is-task-sequence-running? (get-all-build-uuids))
+            (filter processing-error (get-all-build-uuids))))))
 
 
 (defn last-task-update
@@ -505,7 +516,8 @@
   (def task-sequence-id (gen-build-task-sequence create-build-description-mdm9607-bl2_2_0-quectel
                                                  build-log-handler))
 
-  (def task-sequence-id "ltenad9607-bl2_2_0_2019-10-24-15h04")
+  (def task-sequence-id-aerror "ltenad9607-bl2_2_0_2021-06-15-23h00s30")
+  (def task-sequence-id "ltenad9607-bl2_2_0_2021-06-14-23h00s30")
 
   (def task-sequence-id (first (get-all-build-uuids)))
 

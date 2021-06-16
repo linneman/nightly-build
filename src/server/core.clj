@@ -195,7 +195,8 @@
 
    otherwise we cut off initial log segment"
   [build-uuid max-length]
-  (let [log (get-processed-log build-uuid)
+  (let [agent-error (processing-error build-uuid)
+        log (or agent-error (get-processed-log build-uuid))
         len (count log)]
     (if (> len max-length)
       (str "...\n" (subs log (- len max-length) len))
