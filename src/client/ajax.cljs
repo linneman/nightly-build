@@ -25,7 +25,7 @@
   ([url str] (send-request url str (fn [e] nil) "GET"))
   ([url str function] (send-request url str function "GET"))
   ([url str function method]
-     (goog.net.XhrIo/send
+     (goog.net.XhrIo.send
       url
       function
       method

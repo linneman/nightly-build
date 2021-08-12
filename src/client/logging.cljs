@@ -16,17 +16,17 @@
 (def debugConsole (goog.debug.Console. "core"))
 (. debugConsole (setCapturing true))
 
-(def logger (Logger/getLogger "project-alpha.core"))
-(. logger (setLevel LogLevel/ALL))
+(def logger (Logger/getLogger "client.core"))
+(. logger (setLevel goog.debug.Logger.Level.ALL))
 
 
 
 (defn loginfo
   "creates and info message of given string"
   [msg]
-  (. logger (log LogLevel/INFO msg)))
+  (. logger (log goog.debug.Logger.Level.INFO msg)))
 
 (defn logerror
   "creates and error message of given string"
   [msg]
-  (. logger (log LogLevel/ERROR msg)))
+  (. logger (log goog.debug.Logger.Level.ERROR msg)))

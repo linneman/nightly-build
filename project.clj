@@ -14,7 +14,7 @@
                  [ring-json-params "0.1.3"]
                  [compojure "1.6.1" :exclusions
                   [org.clojure/clojure org.clojure/clojure-contrib]]
-                 [org.clojure/clojurescript "1.10.520"]]
+                 [org.clojure/clojurescript "1.10.866"]]
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-ring "0.7.0"]
             [cider/cider-nrepl "0.21.1"]
