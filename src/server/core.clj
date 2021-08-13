@@ -293,7 +293,7 @@
   (GET "/builds-for-keys" {:keys [query-string]} (builds-for-keys (set (split query-string #"[\\&]"))))
   (GET "/get-changelog/:id" {params :route-params :as args} (get-changelog (:id params)))
   (POST "/start-build/:id" {params :route-params :as args} (json-str (-> (start-build-task-sequence (:id params)) deref :seq-id)))
-  (POST "/stop-build/:id" {params :route-params :as args} (json-str (-> (stop-build-task-sequence (:id params)) deref :seq-id)))
+  (POST "/stop-build/:id" {params :route-params :as args} (json-str (-> (stop-build-task-sequence (:id params)) :id)))
   (POST "/start-new-build-from-desc/:desc" {params :route-params :as args} (json-str (start-new-build-with (:desc params))))
   (GET "/get-cron-build-descriptions" args (get-cron-build-descriptions))
   (POST "/set-cron-build-descriptions" {params :params session :session} (update-cron-build-descriptions params))
