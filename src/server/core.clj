@@ -23,7 +23,7 @@
         [server.auth]
         [crossover.macros]
         [org.satta.glob]
-        [clojure.tools.nrepl.server :only (start-server stop-server)]
+        [nrepl.server :only (start-server stop-server)]
         [clojure.string :only [split]]
         [compojure.core :only [GET POST PUT DELETE]]
         [ring.util.response :only [response content-type charset redirect]]
