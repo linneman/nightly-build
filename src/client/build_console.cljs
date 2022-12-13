@@ -32,7 +32,7 @@
 (let [[dialog ok-button cancel-button]
       (get-modal-dialog :panel-id "build-console-dialog"
                         :title-string "build console"
-                        false)]
+                        :keep-open false)]
   (def build-console-dialog dialog)
   (def build-console (gdom/getElement "build-console")))
 

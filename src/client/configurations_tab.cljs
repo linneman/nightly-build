@@ -15,6 +15,7 @@
    [clojure.string :as str]
    [goog.dom :as gdom]
    [goog.events :as events]
+   [goog.object :as gobject]
    [goog.positioning.Corner :as poscorner]
    [goog.ui.Button :as Button]
    [goog.ui.ButtonRenderer :as ButtonRenderer]
@@ -869,7 +870,7 @@
                         :ok-button-id "confirm-save-as"
                         :cancel-button-id "cancel-save-as"
                         :dispatched-event :entered-save-as-filename
-                        false)]
+                        :keep-open false)]
   (def save-as-dialog dialog))
 
 (comment

@@ -216,7 +216,7 @@
                         :title-string "Login"
                         :ok-button-id "confirm-login"
                         :dispatched-event :entered-login-name-pw
-                        false)]
+                        :keep-open false)]
   (def login-dialog dialog))
 
 
@@ -227,7 +227,7 @@
                         :ok-button-id "confirm-reset-passwd"
                         :cancel-button-id "cancel-reset-passwd"
                         :dispatched-event :entered-new-pw
-                        false)]
+                        :keep-open false)]
   (def reset-passwd-dialog dialog))
 
 
@@ -238,7 +238,7 @@
                         :ok-button-id "confirm-forgot-passwd"
                         :cancel-button-id "cancel-forgot-passwd"
                         :dispatched-event :entered-username-for-act-link
-                        false)]
+                        :keep-open false)]
   (def forgot-password-dialog dialog))
 
 

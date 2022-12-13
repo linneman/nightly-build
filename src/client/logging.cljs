@@ -9,24 +9,26 @@
 
 (ns client.logging
   (:require [goog.debug.Console :as Console]
-            [goog.debug.Logger :as Logger]
-            [goog.debug.Logger.Level :as LogLevel]))
+            [goog.log :as Log]
+            [goog.log.Level :as LogLevel]))
 
 
 (def debugConsole (goog.debug.Console. "core"))
 (. debugConsole (setCapturing true))
 
-(def logger (Logger/getLogger "client.core"))
-(. logger (setLevel goog.debug.Logger.Level.ALL))
-
+(def logger (Log/getLogger "client.core" LogLevel/ALL))
 
 
 (defn loginfo
   "creates and info message of given string"
   [msg]
-  (. logger (log goog.debug.Logger.Level.INFO msg)))
+  ;(. logger (log LogLevel/INFO msg))
+  (Log/log logger LogLevel/INFO msg nil)
+  )
 
 (defn logerror
   "creates and error message of given string"
   [msg]
-  (. logger (log goog.debug.Logger.Level.ERROR msg)))
+  ;(. logger (log LogLevel/SEVERE msg))
+  (Log/log logger LogLevel/SEVERE msg nil)
+  )
