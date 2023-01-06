@@ -63,7 +63,7 @@ pure Java'.
 Download the  precompiled binary using  the following command as  illustrated in
 the following shell command:
 
-    wget https://github.com/linneman/nightly-build/releases/download/v1.0.4/bond-1.0.5-standalone.jar
+    wget https://github.com/linneman/nightly-build/releases/download/v1.0.5/bond-1.0.5-standalone.jar
 
 The nightly build service daemon is started via the following command line:
 
