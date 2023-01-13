@@ -283,16 +283,14 @@
 
 
 (compojure/defroutes main-routes
-  ;(GET "/index.html" args (str "<body>" args "</body>"))
   (GET "/" args (redirect "index.html"))
-  (GET "/build-log-all/:id" {params :route-params :as args} (build-log-all (:id params) 250000))
-  (GET "/build-log-upd/:id" {params :route-params :as args} (json-str (get-last-log (:id params))))
-  ;(GET "/build-log-upd/:id" {params :route-params :as args} (json-str {:messages "messages" :ts 100}))
+  (GET "/build-log-all/:id" {params :route-params :as args} (json-str (build-log-all (:id params) 250000)))
+  (GET "/build-log-upd/:id/:ts" {params :route-params :as args} (json-str (get-log-entries-from-ts (:id params) (read-string (:ts params)))))
   (GET "/all-builds" args (all-builds))
   (GET "/all-builds-running" args (all-builds-running))
   (GET "/builds-since/:ts" {params :route-params :as args} (upd-builds-since (:ts params)))
   (GET "/builds-for-keys" {:keys [query-string]} (builds-for-keys (set (split query-string #"[\\&]"))))
-  (GET "/get-changelog/:id" {params :route-params :as args} (get-changelog (:id params)))
+  (GET "/get-changelog/:id" {params :route-params :as args} (json-str {:messages (get-changelog (:id params)) :ts 0}))
   (POST "/start-build/:id" {params :route-params :as args} (json-str (-> (start-build-task-sequence (:id params)) deref :seq-id)))
   (POST "/stop-build/:id" {params :route-params :as args} (json-str (-> (stop-build-task-sequence (:id params)) :id)))
   (POST "/start-new-build-from-desc/:desc" {params :route-params :as args} (json-str (start-new-build-with (:desc params))))

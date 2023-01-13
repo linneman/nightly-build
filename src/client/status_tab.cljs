@@ -56,12 +56,11 @@
    #{:build-table-action}
    (fn [evt {:keys [build-id action]}]
      (loginfo (str "react-to event: " action " with: " build-id))
-     (dorun
-      (case action
-        :open-build-console (open-build-console-dialog build-id)
-        :open-changelog-console (open-changelog-console-dialog build-id)
-        :start-build (send-post-request build-id "start-build")
-        :stop-build (send-post-request build-id "stop-build"))))))
+     (case action
+       :open-build-console (open-build-console-dialog build-id)
+       :open-changelog-console (open-changelog-console-dialog build-id)
+       :start-build (send-post-request build-id "start-build")
+       :stop-build (send-post-request build-id "stop-build")))))
 
 (comment
   (dispatch/delete-reaction action-button-reactor)

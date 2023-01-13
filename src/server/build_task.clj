@@ -365,8 +365,10 @@
 (defn get-changelog
   "retrieve changelog for given task-uuid"
   [task-uuid]
-  (when-let [task-sequence (get-task-sequence task-uuid)]
-    (get-in @task-sequence [:opt-term-results :changelog])))
+  (let [changelog
+        (when-let [task-sequence (get-task-sequence task-uuid)]
+          (get-in @task-sequence [:opt-term-results :changelog]))]
+    (or changelog "not defined yet!")))
 
 
 (defn all-task-states-sorted-by-date

@@ -24,9 +24,7 @@
   (let [items-without-refs
         (->>
          (map (fn [[k v]]
-                (let [v-without-refs (-> v (dissoc :update)
-                                         (dissoc :processed-entries)
-                                         (dissoc :last-updated))]
+                (let [v-without-refs (-> v (dissoc :ts-msg-sorted-map))]
                   [k v-without-refs]))
               items)
          (into {}))]
@@ -45,9 +43,7 @@
         items-with-refs
         (->>
          (map (fn [[k v]]
-                (let [v-with-refs (-> v (assoc :update (ref nil))
-                                         (assoc :processed-entries (ref nil))
-                                         (assoc :last-updated (ref nil)))]
+                (let [v-with-refs (-> v (assoc :ts-msg-sorted-map (ref nil)))]
                   [k v-with-refs]))
               items)
          (into {}))]
@@ -89,10 +85,11 @@
   "interates over log entry map and removes all
    var references to large processed entries"
   [entries]
+  (def _released_entried entries)
   (reduce
    (fn [res [k v]]
      (assoc res k
-            (update-in v [:processed-entries]
+            (update-in v [:ts-msg-sorted-map]
                        #(dosync (ref-set % nil)))))
    {}
    entries))
@@ -114,9 +111,7 @@
                                (-> cached
                                    (assoc build-id {:build-id build-id
                                                     :created (str (java.time.LocalDateTime/now))
-                                                    :update (ref nil)
-                                                    :last-updated (ref (.getTime (java.util.Date.)))
-                                                    :processed-entries (ref nil)
+                                                    :ts-msg-sorted-map (ref (sorted-map))
                                                     :logfilename logfilename}))
                                entries-by-date (->> upd-cached vals (group-by :created) sort reverse)
                                kept (take max-elements-in-cache entries-by-date)
@@ -134,26 +129,21 @@
 
 (defn build-log-handler
   "creates  a more  sophisticated  log  handler which  writes  out  log data  to
-  standard out  and to  the specified file.  Futhermore the data  is kept  to an
-  updated cache for the specified numer of milliseconds where one seconds is the
-  default. The  cache is transfered  to the  processed entries var  whenever the
-  invocation period between to logger functions is bigger than that."
-  [build-id filename & {:keys [cache-time-ms] :or {cache-time-ms 1500}}]
+  standard out  and to the  specified file. Furthermore the  data is kept  to an
+  updated cache  where every  invocation is associated  with the  timestamp when
+  handler was  called. This allows  to deliver only  those messages to  a client
+  which have not been transferred yet."
+  [build-id filename]
   (let [{:keys [build-id]} (get-log-atom :build-id build-id :logfilename filename)]
     (fn [logstr]
       (when (and logstr (> (count logstr) 0))
         (print logstr)
         (flush)
-        (when-let [{:keys [build-id logfilename update last-updated processed-entries]}
+        (when-let [{:keys [build-id logfilename ts-msg-sorted-map]}
                    (get-in @log-atom-store [:cached build-id])]
           (dosync
-           (let [now (.getTime (java.util.Date.))
-                 period (- now @last-updated)]
-             (if (> period cache-time-ms)
-               (do (alter processed-entries str @update)
-                   (ref-set update logstr)
-                   (ref-set last-updated now))
-               (alter update str logstr))))
+           (let [now (.getTime (java.util.Date.))]
+             (alter ts-msg-sorted-map assoc now logstr)))
           (when logfilename
             (spit logfilename logstr :append true)))))))
 
@@ -165,23 +155,29 @@
    Otherwise read these messages from the associated log file."
   [build-id]
   (when log-atom-store
-    (if-let [proc (get-in @log-atom-store [:cached build-id :processed-entries])]
-      @proc
-      (when-let [logfilename (get-in @log-atom-store [:uncached build-id :logfilename])]
-        (try
-          (slurp logfilename)
-          (catch Exception e (.getMessage e)))))))
+    (let [[messages ts]
+          (if-let [ts-msg-map (get-in @log-atom-store [:cached build-id :ts-msg-sorted-map])]
+            [(apply str (vals @ts-msg-map)) (key (last @ts-msg-map))]
+            (if-let [logfilename (get-in @log-atom-store [:uncached build-id :logfilename])]
+              (try
+                [(slurp logfilename) 0]
+                (catch Exception e [(.getMessage e) 0]))
+              ["logdata not available" 0]))]
+      {:messages messages :ts ts})))
 
 
-(defn get-last-log
-  "get hashmap of the last log messages of the past 10 seconds
+(defn get-log-entries-from-ts
+  "get hashmap of the last log messages after given timestamp (ts)
    and the associated timestamp when the message has been generated"
-  [build-id]
+  [build-id ts]
   (when log-atom-store
-    (when-let [logh (get-in @log-atom-store [:cached build-id])]
-      (let [last-updated (-> logh :last-updated)
-            update (-> logh :update)]
-        {:messages @update :ts @last-updated}))))
+    (when-let [ts-msg-map (get-in @log-atom-store [:cached build-id :ts-msg-sorted-map])]
+      (let [ts-msg-map @ts-msg-map
+            upd-ts-msg-map (filter (fn [[k v]] (> k ts)) ts-msg-map)
+            upd-ts-msg-map (if (empty? upd-ts-msg-map) (sorted-map ts "") upd-ts-msg-map)
+            last-updated (key (last upd-ts-msg-map))
+            upd-msg (apply str (vals upd-ts-msg-map))]
+        {:messages upd-msg :ts last-updated}))))
 
 
 (comment
@@ -196,6 +192,15 @@
 
   (print-store (:cached @log-atom-store))
   (print-store (:uncached @log-atom-store))
+
+  (println "-----")
+  (map println (keys (:cached @log-atom-store)))
+
+
+  (count (keys (:cached @log-atom-store)))
+
+  ((:cached @log-atom-store) "build-example_2023-01-13-18h35s45")
+
 
 
   (keys (:cached @log-atom-store))
@@ -231,12 +236,9 @@
 
   (get-in @log-atom-store [:uncached 4 :logfilename])
 
-  (get-last-log 4)
-  (get-last-log 5)
   (get-processed-log 4)
   (get-processed-log 5)
 
-  (get-last-log "ltenad9607-bl2_2_0_2019-10-24-15h04")
   (get-processed-log "ltenad9607-bl2_2_0_2019-10-24-12h35")
 
   )

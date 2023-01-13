@@ -50,17 +50,6 @@
     (set! (. build-console -scrollTop) (. build-console -scrollHeight))))
 
 
-(defn- initial-build-console-request
-  [build-id & args]
-  (let [request (or (first args) "/build-log-all/")]
-    (send-request (str request build-id)
-                {}
-                (fn [ajax-evt]
-                  (let [resp (. (. ajax-evt -target) (getResponseText))]
-                    (init-build-console resp)))
-                "GET")))
-
-
 (def ^{:private true
          :doc "Clojurescript atom for caching timestamp of last ajax update"}
   ts-last-console-update (atom 0))
@@ -72,15 +61,30 @@
   (atom ""))
 
 
-(defn- update-build-console-request
-  []
-  (send-request (str "/build-log-upd/" @requested-build-id)
+(defn- initial-build-console-request
+  [build-id & args]
+  (let [request (or (first args) "/build-log-all/")]
+    (send-request (str request build-id)
                 {}
                 (fn [ajax-evt]
                   (let [resp (. (. ajax-evt -target) (getResponseText))]
                     (when-let [resp (json/parse resp)]
                       (let [msg (resp "messages")
-                            _ (def _msg msg)
+                            ts (resp "ts")]
+                        (reset! ts-last-console-update ts)
+                        (init-build-console msg)))))
+                "GET")))
+
+
+
+(defn- update-build-console-request
+  []
+  (send-request (str "/build-log-upd/" @requested-build-id "/" @ts-last-console-update)
+                {}
+                (fn [ajax-evt]
+                  (let [resp (. (. ajax-evt -target) (getResponseText))]
+                    (when-let [resp (json/parse resp)]
+                      (let [msg (resp "messages")
                             ts (resp "ts")]
                         (loginfo (str  "timestamp build console upd: " ts))
                         (swap! ts-last-console-update
@@ -95,7 +99,7 @@
 
 (def ^{:private true
        :doc "Ajax Polling Timer"}
-  update-build-log-timer (goog.Timer. 500))
+  update-build-log-timer (goog.Timer. 1000))
 
 
 (events/listen update-build-log-timer goog.Timer/TICK update-build-console-request)
