@@ -12,7 +12,8 @@
             [compojure.core :as compojure]
             [compojure.route :as route]
             [compojure.handler :as handler]
-            [server.local-settings :as setup])
+            [server.local-settings :as setup]
+            [cider.nrepl :refer (cider-nrepl-handler)])
   (:use [server.build-task]
         [server.cron]
         [server.shell-utils]
@@ -66,7 +67,7 @@
 
 
 (defn run []
-  (defonce server (start-server :bind setup/*repl-host* :port setup/*repl-port*))
+  (defonce server (start-server :bind setup/*repl-host* :port setup/*repl-port* :handler cider-nrepl-handler))
   (restart-cron-processing)
   (create-admin-user-if-not-existing)
   0)

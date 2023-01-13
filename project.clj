@@ -7,7 +7,7 @@
                  [org.clojure/tools.cli "0.3.5"]
                  [me.raynes/conch "0.8.0"]
                  [clj-glob "1.0.0"]
-                 [nrepl "0.5.0"]
+                 [nrepl "1.0.0"]
                  [org.apache.commons/commons-email "1.5"]
                  [ring/ring-core "1.8.0"]
                  [ring/ring-jetty-adapter "1.8.0"]
