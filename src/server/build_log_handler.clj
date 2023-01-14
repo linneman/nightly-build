@@ -139,12 +139,15 @@
       (when (and logstr (> (count logstr) 0))
         (print logstr)
         (flush)
-        (when-let [{:keys [build-id logfilename ts-msg-sorted-map]}
+        (if-let [{:keys [build-id logfilename ts-msg-sorted-map]}
                    (get-in @log-atom-store [:cached build-id])]
-          (dosync
-           (let [now (.getTime (java.util.Date.))]
-             (alter ts-msg-sorted-map assoc now logstr)))
-          (when logfilename
+          (do
+            (dosync
+             (let [now (.getTime (java.util.Date.))]
+               (alter ts-msg-sorted-map assoc now logstr)))
+            (when logfilename
+              (spit logfilename logstr :append true)))
+          (when-let [{:keys [logfilename]} (get-in @log-atom-store [:uncached build-id])]
             (spit logfilename logstr :append true)))))))
 
 
