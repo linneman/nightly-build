@@ -61,9 +61,15 @@
   (atom ""))
 
 
+(def ^{:private true
+       :doc "Ajax Polling Timer"}
+  update-build-log-timer (goog.Timer. 1000))
+
+
 (defn- initial-build-console-request
   [build-id & args]
   (let [request (or (first args) "/build-log-all/")]
+    (init-build-console "\n\tLoading page ...")
     (send-request (str request build-id)
                 {}
                 (fn [ajax-evt]
@@ -72,7 +78,8 @@
                       (let [msg (resp "messages")
                             ts (resp "ts")]
                         (reset! ts-last-console-update ts)
-                        (init-build-console msg)))))
+                        (init-build-console msg)
+                        (. update-build-log-timer (start))))))
                 "GET")))
 
 
@@ -96,10 +103,6 @@
                                      ts)
                                    prev-ts)))))))
                 "GET"))
-
-(def ^{:private true
-       :doc "Ajax Polling Timer"}
-  update-build-log-timer (goog.Timer. 1000))
 
 
 (events/listen update-build-log-timer goog.Timer/TICK update-build-console-request)
@@ -130,7 +133,7 @@
      (fn [evt data]
        (when (= data "build-console-dialog")
          (case evt
-           :dialog-opened (. update-build-log-timer (start))
+           :dialog-opened (loginfo "build log console is opened")
            :dialog-closed (. update-build-log-timer (stop)))))))
 
 

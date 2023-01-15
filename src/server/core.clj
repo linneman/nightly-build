@@ -197,11 +197,13 @@
    otherwise we cut off initial log segment"
   [build-uuid max-length]
   (let [agent-error (processing-error build-uuid)
-        log (or agent-error (get-processed-log build-uuid))
-        len (count log)]
-    (if (> len max-length)
-      (str "...\n" (subs log (- len max-length) len))
-      log)))
+        log (or agent-error (:messages (get-processed-log build-uuid)))
+        len (count log)
+        log-cut (if (> len max-length)
+                  (str "...\n" (subs log (- len max-length) len))
+                  log)]
+    {:messages log-cut :ts 0}))
+
 
 (defn get-cron-build-descriptions
   "returns the cron build descriptions in json format"
@@ -284,7 +286,7 @@
 
 (compojure/defroutes main-routes
   (GET "/" args (redirect "index.html"))
-  (GET "/build-log-all/:id" {params :route-params :as args} (json-str (build-log-all (:id params) 250000)))
+  (GET "/build-log-all/:id" {params :route-params :as args} (json-str (build-log-all (:id params) 5000000)))
   (GET "/build-log-upd/:id/:ts" {params :route-params :as args} (json-str (get-log-entries-from-ts (:id params) (read-string (:ts params)))))
   (GET "/all-builds" args (all-builds))
   (GET "/all-builds-running" args (all-builds-running))
