@@ -63,11 +63,11 @@ pure Java'.
 Download the  precompiled binary using  the following command as  illustrated in
 the following shell command:
 
-    wget https://github.com/linneman/nightly-build/releases/download/v1.0.7/bond-1.0.7-standalone.jar
+    wget https://github.com/linneman/nightly-build/releases/download/v1.0.8/bond-1.0.8-standalone.jar
 
 The nightly build service daemon is started via the following command line:
 
-    java -jar bond-1.0.7-standalone.jar
+    java -jar bond-1.0.8-standalone.jar
 
 When the  server is started for  the first time, the  following preference files
 are initially installed in the user's home directory:
