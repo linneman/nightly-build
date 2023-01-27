@@ -78,8 +78,7 @@
                       (let [msg (resp "messages")
                             ts (resp "ts")]
                         (reset! ts-last-console-update ts)
-                        (init-build-console msg)
-                        (. update-build-log-timer (start))))))
+                        (init-build-console msg)))))
                 "GET")))
 
 
@@ -122,7 +121,8 @@
     (. build-console-dialog (setTitle title))
     (reset! requested-build-id build-id)
     (initial-build-console-request build-id)
-    (open-modal-dialog build-console-dialog)))
+    (open-modal-dialog build-console-dialog)
+    (. update-build-log-timer (start))))
 
 
 (def ^{:private true
