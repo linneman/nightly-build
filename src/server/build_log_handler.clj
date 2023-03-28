@@ -39,7 +39,7 @@
    ':last-update' to a log item hash map which is fetched from
    a string."
   [s]
-  (let [items (-> s read-string eval)
+  (let [items (clojure.edn/read-string s) ; (-> s read-string eval)
         items-with-refs
         (->>
          (map (fn [[k v]]

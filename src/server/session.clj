@@ -29,7 +29,7 @@
   "loads and deserializes the given session store hash table from disk"
   [filename]
   (try
-    (-> filename slurp read-string eval)
+    (-> filename slurp clojure.edn/read-string)
     (catch java.io.FileNotFoundException e
       (do (println-err "caught exception: " (.getMessage e)) {}))))
 
